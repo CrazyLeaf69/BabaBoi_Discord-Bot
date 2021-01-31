@@ -16,7 +16,7 @@ const cooldowns = new Discord.Collection();
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`)
 });
-client.login((process.env.token))
+client.login(token)
 
 
 
