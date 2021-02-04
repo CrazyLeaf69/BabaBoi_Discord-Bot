@@ -1,23 +1,23 @@
 module.exports = {
-	name: 'val',
-	aliases: ['v'],
-	description: 'Show rank of player',
+	name: 'a_map',
+	aliases: ['m'],
+	description: 'Show witch map is active',
 	args: true,
 	argsNeeded: false,
-	execute(message, args) {
+	execute(message) {
 		//class="map-countdown"
 		//website = https://apexmap.kuroi.io
-		const acc = args[0].split("#")
+
 		const fetch = require("node-fetch");
 		const cheerio = require("cheerio");
 		try {
-			fetch("https://tracker.gg/valorant/profile/riot/" + acc[0] +"%23" + acc[1] + "/overview").then(res => res.text())
+			fetch("https://tracker.gg/valorant/profile/riot/LuKeZ%237050/overview").then(res => res.text())
 			.then(html => {
 				const $ = cheerio.load(html)
 				// console.log(html)
 				const title = $(".valorant-highlighted-stat__value")
 				const og = title.text()
-				message.channel.send(og.substring(0,og.split("").length-4))
+				console.log(og.substring(0,og.split("").length-4))
 			});	
 		} catch (error) {
 			console.error();
