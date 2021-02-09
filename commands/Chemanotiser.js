@@ -9,7 +9,7 @@ function checklesson(){
     var min = date.getMinutes();
 
     // the amount of minutes that has passed;
-    var current = (h*60) + min;
+    var current = (h*60) + min + 60;
     console.log(current)
 
     // array of all lesson objects
@@ -29,7 +29,7 @@ function checklesson(){
 
         // here i need to get hours and minutes into minutes
         const timeStart = element.timeStart.split(":");
-        const StartInMinutes = +timeStart[0]*60 + +timeStart[1] + 60;
+        const StartInMinutes = +timeStart[0]*60 + +timeStart[1];
         if (day == dayOfWeek) {
             orderedLesTime.push(StartInMinutes)
             unorderedLesTime.push(StartInMinutes)
