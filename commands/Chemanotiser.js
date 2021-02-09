@@ -29,7 +29,7 @@ function checklesson(){
 
         // here i need to get hours and minutes into minutes
         const timeStart = element.timeStart.split(":");
-        const StartInMinutes = +timeStart[0]*60 + +timeStart[1]
+        const StartInMinutes = +timeStart[0]*60 + +timeStart[1] + 60;
         if (day == dayOfWeek) {
             orderedLesTime.push(StartInMinutes)
             unorderedLesTime.push(StartInMinutes)
