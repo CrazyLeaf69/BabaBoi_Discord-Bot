@@ -2,7 +2,7 @@ const { execute } = require("./help");
 
 module.exports = {
     name: 'server',
-    aliases: 'server-info',
+    aliases: ['server-info'],
     description: 'Wiew info about the server',
     args: true,
     argsNeeded: false,
