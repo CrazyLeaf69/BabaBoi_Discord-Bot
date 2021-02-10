@@ -4,7 +4,9 @@ module.exports = {
 	aliases: 'checkL',
 	args: true,
 	argsNeeded: false,
-	async execute(client, data, message) {
+	async execute(message) {
+	    const { data } = require('./../chema.json');
+		
             var date = new Date();
             var day = date.getDay();
             var h = date.getHours();
