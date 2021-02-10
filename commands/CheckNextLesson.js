@@ -62,7 +62,7 @@ module.exports = {
             }
             for (let i = 0; i < orderedLesTime.length; i++) {
                 const element = orderedLesTime[i];
-                if (current < element) {
+                if (current <= element) {
                     const embed = new Discord.MessageEmbed()
                         .setTitle(orderedLessons[i])
                         .setColor("#0036FF")
