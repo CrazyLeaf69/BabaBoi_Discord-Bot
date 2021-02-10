@@ -1,3 +1,5 @@
+const Discord = require('discord.js');
+
 module.exports = {
 	name: 'check_lesson',
 	description: 'Check next lesson of TE19D',
