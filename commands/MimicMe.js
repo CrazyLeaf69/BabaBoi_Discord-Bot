@@ -3,7 +3,7 @@ const fs = require("fs")
 module.exports = {
 	name: 'mimic',
 	description: 'Enables voicerecognition',
-	aliases: 'm',
+	aliases: ['m'],
 	args: true,
 	argsNeeded: false,
 	async execute(message) {
