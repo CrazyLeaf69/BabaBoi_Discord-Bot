@@ -81,7 +81,7 @@ function checklesson(){
     var min = date.getMinutes();
 
     // the amount of minutes that has passed;
-    var current = (h*60) + min;
+    var current = (h*60) + min + 60;
 //     console.log(current)
 
     // array of all lesson objects
