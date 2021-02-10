@@ -15,8 +15,7 @@ module.exports = {
             var min = date.getMinutes();
         
             // the amount of minutes that has passed;
-            var current = (h*60) + min;
-            console.log(current)
+            var current = (h*60) + min + 60;
         
             // array of all lesson objects
             array = data.lessonInfo
