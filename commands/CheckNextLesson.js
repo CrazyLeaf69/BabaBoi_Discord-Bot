@@ -1,9 +1,9 @@
 const Discord = require('discord.js');
 
 module.exports = {
-	name: 'check_lesson',
+	name: 'checkLesson',
 	description: 'Check next lesson of TE19D',
-	aliases: 'checkL',
+	aliases: ['check', 'next'],
 	args: true,
 	argsNeeded: false,
 	async execute(message) {
