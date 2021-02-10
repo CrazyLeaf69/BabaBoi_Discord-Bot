@@ -4,7 +4,7 @@ module.exports = {
 	aliases: 'checkL',
 	args: true,
 	argsNeeded: false,
-	async execute(client) {
+	async execute(client, data, message) {
             var date = new Date();
             var day = date.getDay();
             var h = date.getHours();
@@ -62,7 +62,7 @@ module.exports = {
                     const embed = new Discord.MessageEmbed()
                         .setTitle(orderedLessons[i])
                         .setColor("#0036FF")
-                    return client.channels.cache.get("693042214875430957").send(embed);
+                    return message.channel.send(embed);
                 }
             }
         }
