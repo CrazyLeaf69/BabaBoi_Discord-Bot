@@ -119,10 +119,13 @@ function checklesson(){
     for (let i = 0; i < orderedLesTime.length; i++) {
         const element = orderedLesTime[i];
         const currentObj = element;
-        for (let i = 0; i < unorderedLesTime.length; i++) {
-            const element = unorderedLesTime[i];
-            if (element == currentObj) {
-                orderedLessons.push(unordedLessons[i])
+        if (orderedLesTime[i] == orderedLesTime[i-1]) {
+        }else {
+            for (let i = 0; i < unorderedLesTime.length; i++) {
+                const element = unorderedLesTime[i];
+                if (element == currentObj) {
+                    orderedLessons.push(unordedLessons[i])
+                }
             }
         }
     }
