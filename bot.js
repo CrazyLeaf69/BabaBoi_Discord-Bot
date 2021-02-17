@@ -20,7 +20,7 @@ client.once('ready', async () => {
     // Send message & Store reference to the message
     const embed = new Discord.MessageEmbed()
         .setTitle("Starting soon...")
-    msg = await client.channels.cache.get("763705698072395817").send(embed);
+    msg = await client.channels.cache.get("811539777722515456").send(embed);
 
     setInterval(() => {
         checklesson();
@@ -28,7 +28,6 @@ client.once('ready', async () => {
 });
 
 client.login(token)
-
 
 
 client.on('message', async message => {
