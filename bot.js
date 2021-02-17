@@ -14,10 +14,19 @@ for (const file of commandFiles) {
 }
 const cooldowns = new Discord.Collection();
 
-client.once('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
-    setInterval(checklesson, 60000);
+let msg;
+client.once('ready', async () => {
+    console.log(`Logged in as ${client.user.tag}!`)
+    // Send message & Store reference to the message
+    const embed = new Discord.MessageEmbed()
+        .setTitle("Starting soon...")
+    msg = await client.channels.cache.get("763705698072395817").send(embed);
+
+    setInterval(() => {
+        checklesson();
+    }, 10000);
 });
+
 client.login(token)
 
 
@@ -74,7 +83,10 @@ client.on('message', async message => {
     }
 
 });
+
+// <--------------------------------------------------- Check Lesson -------------------------------------------->
 function checklesson(){
+    // date and time conficuration
     var date = new Date();
     var day = date.getDay();
     var h = date.getHours();
@@ -82,39 +94,70 @@ function checklesson(){
 
     // the amount of minutes that has passed;
     var current = (h*60) + min + 60;
-//     console.log(current)
 
     // array of all lesson objects
-    array = data.lessonInfo
-    // console.log(array)
+    const LessonInfo = data.lessonInfo
 
     // ordered and unordered lists
     var orderedLesTime = [];
     var unorderedLesTime = [];
+    var orderedLesEnd = [];
     var orderedLessons = [];
     var unordedLessons = [];
+    var StartTimeInNormalTime = [];
+    var EndTimeInNormalTime = [];
 
 
-    array.forEach(element => {
+    LessonInfo.forEach(element => {
         const dayOfWeek = element.dayOfWeekNumber;
         const lesson = element.texts[0];
 
         // here i need to get hours and minutes into minutes
         const timeStart = element.timeStart.split(":");
-        const StartInMinutes = +timeStart[0]*60 + +timeStart[1]
+        const StartInMinutes = +timeStart[0]*60 + +timeStart[1];
+
+        const timeEnd = element.timeEnd.split(":");
+        const EndInMinutes = +timeEnd[0]*60 + +timeEnd[1]
+
         if (day == dayOfWeek) {
             orderedLesTime.push(StartInMinutes)
             unorderedLesTime.push(StartInMinutes)
-            unordedLessons.push("Nästa lektion är: " + lesson + " och börjar: " + timeStart[0] + ":" + timeStart[1])
+            orderedLesEnd.push(EndInMinutes)
+            unordedLessons.push(lesson)
+            StartTimeInNormalTime.push(element.timeStart.substring(0, element.timeStart.length-3))
+            EndTimeInNormalTime.push(element.timeEnd.substring(0, element.timeEnd.length-3))
         }
     });
+
+    // Sort the time in minutes lists
     orderedLesTime.sort(function(a, b) {
         return a - b;
     });
-
+    orderedLesEnd.sort(function(a, b) {
+        return a - b;
+    });
+    // remove distansundervisning
     if (orderedLesTime[0] == 480) {
         orderedLesTime.shift()
     }
+    if (orderedLesEnd[orderedLesEnd.length-1] == 1020){
+        orderedLesEnd.pop(orderedLesEnd[orderedLesEnd.length-1]);
+    }
+    // sort normal time lists
+    StartTimeInNormalTime.sort(function(a, b) {
+        return a.localeCompare(b);
+    });
+    EndTimeInNormalTime.sort(function(a, b) {
+        return a.localeCompare(b);
+    });
+    // remove distansundervisning
+    if (StartTimeInNormalTime[0] == '08:00') {
+        StartTimeInNormalTime.shift()
+    }
+    if (EndTimeInNormalTime[EndTimeInNormalTime.length-1] == '17:00'){
+        EndTimeInNormalTime.pop(EndTimeInNormalTime[EndTimeInNormalTime.length-1]);
+    }
+    
 
     for (let i = 0; i < orderedLesTime.length; i++) {
         const element = orderedLesTime[i];
@@ -130,13 +173,45 @@ function checklesson(){
         }
     }
     for (let i = 0; i < orderedLesTime.length; i++) {
-        const element = orderedLesTime[i];
-        if (current == element-5) {
+        let lessonStarttime = orderedLesTime[i];
+        let lessonEndtime = orderedLesEnd[i];
+        let previousLessonEndtime = orderedLesEnd[i-1];
+        if ((current >= previousLessonEndtime && current <= lessonStarttime) || current == 0) {
             const embed = new Discord.MessageEmbed()
-                .setTitle(orderedLessons[i])
                 .setColor("#0036FF")
-            return client.channels.cache.get("693042214875430957").send(embed);
+                .setTitle("Lektioner:")
+                .addFields(
+                    { name: "Kommande Lektion: ", value: `--------------------------\n**${orderedLessons[i]}**\nBörjar: ${StartTimeInNormalTime[i]}`, inline: true},
+                    )
+            return msg.edit(embed);
+        }
+        else if (current >= lessonStarttime && current <= lessonEndtime) {
+            if (orderedLessons[i+1] == undefined) {
+                const embed = new Discord.MessageEmbed()
+                    .setColor("#0036FF")
+                    .setTitle("Lektioner:")
+                    .addFields(
+                        { name: "Nuvarande Lektion: ", value: `--------------------------\n**${orderedLessons[i]}**\nSlutar: ${EndTimeInNormalTime[i]}`, inline: true},
+                        { name: "Nästa Lektion:", value: `--------------------------\n**Slut på dagen**`, inline: true},
+                        )
+                return msg.edit(embed);
+            }
+            else {
+                const embed = new Discord.MessageEmbed()
+                    .setColor("#0036FF")
+                    .setTitle("Lektioner:")
+                    .addFields(
+                        { name: "Nuvarande Lektion: ", value: `--------------------------\n**${orderedLessons[i]}**\nSlutar: ${EndTimeInNormalTime[i]}`, inline: true},
+                        { name: "Nästa Lektion:", value: `--------------------------\n**${orderedLessons[i+1]}**\nBörjar: ${StartTimeInNormalTime[i+1]}`, inline: true},
+                        )
+                return msg.edit(embed);
+            }           
+        } else if (current >= orderedLesEnd[orderedLesEnd.length - 1]) {
+            const embed = new Discord.MessageEmbed()
+                .setColor("#0036FF")
+                .setTitle("Lektioner:")
+                .setDescription("**Inga fler lektioner idag**")
+            return msg.edit(embed);
         }
     }
 }
-
