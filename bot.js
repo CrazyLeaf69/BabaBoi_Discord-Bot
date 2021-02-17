@@ -175,7 +175,7 @@ function checklesson(){
         let lessonStarttime = orderedLesTime[i];
         let lessonEndtime = orderedLesEnd[i];
         let previousLessonEndtime = orderedLesEnd[i-1];
-        if ((current >= previousLessonEndtime && current <= lessonStarttime) || current == 0) {
+        if ((current >= previousLessonEndtime && current <= lessonStarttime) || current <= orderedLesTime[0]) {
             const embed = new Discord.MessageEmbed()
                 .setColor("#0036FF")
                 .setTitle("Lektioner:")
