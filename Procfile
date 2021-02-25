@@ -1,1 +1,1 @@
-Worker: set GOOGLE_APPLICATION_CREDENTIALS=/testing-speech-305723-119352bb231c.json & node index.js
+Worker: set GOOGLE_APPLICATION_CREDENTIALS=testing-speech-305723-119352bb231c.json & node index.js
