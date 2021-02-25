@@ -11,8 +11,8 @@ module.exports = {
 
         if (isNaN(amount)) {
             return message.reply('invalid number')
-        } else if (amount <= 1 || amount > 100) {
-            return message.reply('you need to input a number between 1 and 99.');
+        } else if (amount <= 1 || amount >= 50) {
+            return message.reply('you need to input a number between 0 and 50.');
         }
         message.channel.bulkDelete(amount, true).catch(err => {
             console.error(err);
