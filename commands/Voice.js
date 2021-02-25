@@ -104,7 +104,7 @@ async function play(search, message) {
         let connection = await message.member.voice.channel.join();
         let dispatcher = connection.play(ytdl(url), {filter: 'audioonly', quality: 'highest' });
         dispatcher.on('error', console.error);
-        recordAgain(message).catch(err);
+        recordAgain(message).catch(console.error);
     } catch(err) {
         console.log(err);
     };   
