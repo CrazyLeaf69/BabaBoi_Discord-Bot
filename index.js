@@ -18,13 +18,13 @@ client.once('ready', async () => {
     console.log(`Logged in as ${client.user.tag}!`)
     // console.log(client.channels.cache);
     // Send message & Store reference to the message
-    // const embed = new Discord.MessageEmbed()
-    //     .setTitle("Starting soon...")
-    // msg = await client.channels.cache.get("763705698072395817").send(embed);
+    const embed = new Discord.MessageEmbed()
+        .setTitle("Starting soon...")
+    msg = await client.channels.cache.get("811539777722515456").send(embed);
 
-    // setInterval(() => {
-    //     checklesson();
-    // }, 10000);
+    setInterval(() => {
+        checklesson();
+    }, 10000);
 });
 
 client.login(token)
