@@ -6,7 +6,7 @@
 				"author": "My name",
 				"engines": {
     					"node": "14.x"
-  				}
+  				},
 				"dependencies": {
 								"@google-cloud/speech": "^4.2.0",
 								"cheerio": "^1.0.0-rc.5",
