@@ -35,6 +35,7 @@ module.exports = {
 
 // speech to text function that is being called from module.exports
 async function SpeechToText(message) {
+    let transcription = "";
     try {
         // play("music", message)
         const client = new speech.SpeechClient();
@@ -57,10 +58,9 @@ async function SpeechToText(message) {
             config: config
         };
         const [response] = await client.recognize(request);
-        const transcription = response.results.map(result => 
+        transcription = response.results.map(result => 
             result.alternatives[0].transcript).join("\n").toLowerCase();
         console.log(`Transcription: ${transcription}`);
-        return transcription;
     } catch (error) {
         console.log(error);
         recordAgain(message);
