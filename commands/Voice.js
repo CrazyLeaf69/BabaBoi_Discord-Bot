@@ -60,6 +60,7 @@ async function SpeechToText(message) {
         const transcription = response.results.map(result => 
             result.alternatives[0].transcript).join("\n").toLowerCase();
         console.log(`Transcription: ${transcription}`);
+        return transcription;
     } catch (error) {
         console.log(error);
         recordAgain(message);
