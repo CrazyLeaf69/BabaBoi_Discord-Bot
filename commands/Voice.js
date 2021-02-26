@@ -35,45 +35,50 @@ module.exports = {
 
 // speech to text function that is being called from module.exports
 async function SpeechToText(message) {
-    // play("music", message)
-    const client = new speech.SpeechClient();
-    const filename = (`./namnlös.wav`)
-    
-    const file = fs.readFileSync(filename);
-    const audioBytes = file.toString("base64");
+    try {
+        // play("music", message)
+        const client = new speech.SpeechClient();
+        const filename = (`./namnlös.wav`)
+        
+        const file = fs.readFileSync(filename);
+        const audioBytes = file.toString("base64");
 
-    const audio = {
-        content: audioBytes
-    };
-    const config = {
-        encoding: "LINEAR16",
-        sampleRateHertz: 48000,
-        languageCode: "en-US",
-        audioChannelCount: 2
-    };
-    const request = {
-        audio: audio,
-        config: config
-    };
-    const [response] = await client.recognize(request);
-    const transcription = response.results.map(result => 
-        result.alternatives[0].transcript).join("\n").toLowerCase();
+        const audio = {
+            content: audioBytes
+        };
+        const config = {
+            encoding: "LINEAR16",
+            sampleRateHertz: 48000,
+            languageCode: "en-US",
+            audioChannelCount: 2
+        };
+        const request = {
+            audio: audio,
+            config: config
+        };
+        const [response] = await client.recognize(request);
+        const transcription = response.results.map(result => 
+            result.alternatives[0].transcript).join("\n").toLowerCase();
         console.log(`Transcription: ${transcription}`);
-    // ------------------------------------------------------------------------------------------------
-    // --------------------------check the response ---------------------------------------------------
-    // ------------------------------------------------------------------------------------------------
-    if (transcription.includes("speak")) {
-        // wakeUp(trancription, message)
-        speak(message)
-    }
-    else if (transcription.split(" ")[0]=="play") {
-        const searchWords = transcription.split(" ").splice(1).join(" ");
-        console.log(searchWords);
-        play(searchWords, message);
-    }
-    else {
+        // ------------------------------------------------------------------------------------------------
+        // --------------------------check the response ---------------------------------------------------
+        // ------------------------------------------------------------------------------------------------
+        if (transcription.includes("speak")) {
+            // wakeUp(trancription, message)
+            speak(message)
+        }
+        else if (transcription.split(" ")[0]=="play") {
+            const searchWords = transcription.split(" ").splice(1).join(" ");
+            console.log(searchWords);
+            play(searchWords, message);
+        }
+        else {
+            recordAgain(message);
+            console.log("say again");
+        }
+    } catch (error) {
+        console.log(error);
         recordAgain(message);
-        console.log("say again");
     }
 }
 
