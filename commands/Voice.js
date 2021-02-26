@@ -60,25 +60,26 @@ async function SpeechToText(message) {
         const transcription = response.results.map(result => 
             result.alternatives[0].transcript).join("\n").toLowerCase();
         console.log(`Transcription: ${transcription}`);
-        // ------------------------------------------------------------------------------------------------
-        // --------------------------check the response ---------------------------------------------------
-        // ------------------------------------------------------------------------------------------------
-        if (transcription.includes("speak")) {
-            // wakeUp(trancription, message)
-            speak(message)
-        }
-        else if (transcription.split(" ")[0]=="play") {
-            const searchWords = transcription.split(" ").splice(1).join(" ");
-            console.log(searchWords);
-            play(searchWords, message);
-        }
-        else {
-            recordAgain(message);
-            console.log("say again");
-        }
     } catch (error) {
         console.log(error);
         recordAgain(message);
+    }
+    // ------------------------------------------------------------------------------------------------
+    // --------------------------check the response ---------------------------------------------------
+    // ------------------------------------------------------------------------------------------------
+    // coomands
+    if (transcription.includes("speak")) {
+        // wakeUp(trancription, message)
+        speak(message)
+    }
+    else if (transcription.split(" ")[0]=="play") {
+        const searchWords = transcription.split(" ").splice(1).join(" ");
+        console.log(searchWords);
+        play(searchWords, message);
+    }
+    else {
+        recordAgain(message);
+        console.log("say again");
     }
 }
 
