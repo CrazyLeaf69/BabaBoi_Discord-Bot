@@ -16,7 +16,7 @@ module.exports = {
 	aliases: ['rec'],
 	args: true,
 	argsNeeded: false,
-	usage: 'Commands:\nplay <youtube search>\nSearch <youtube search> gives you five alternatives\nlägg till <number 1-5>add song from search to queue\nplay number <number 1-5> lets you play a song from the latest search\n"skip" or "next"\n"pause" and "resume"'
+	usage: 'Commands:\nplay <youtube search>\nSearch <youtube search> gives you five alternatives\nlägg till <number 1-5>add song from search to queue\nplay number <number 1-5> lets you play a song from the latest search\n"skip" or "next"\n"pause" and "resume"',
     	executed: false,
 	async execute(message, server) {
         // this.executed = true;
