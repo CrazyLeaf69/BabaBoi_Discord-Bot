@@ -148,9 +148,9 @@ async function speak(message, server) {
     recordAgain(message, server)
 }
 async function play(search, message, server) {
-    let url = "";
-    const fetch = require("node-fetch");
     try {
+        let url = "";
+        const fetch = require("node-fetch");
         url = "https://www.youtube.com/watch?v=NCFg7G63KgI";
         await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${search}&type=video&key=AIzaSyD4q3HFuGrKvo7qpB0-wsJYWnKiWwZGILM`)
         .then(res => res.json()).then(data => {
@@ -162,7 +162,7 @@ async function play(search, message, server) {
             queue[0] = {title: items[0].snippet.title, url: url};
         });
         console.log(queue);
-        playQueue(message, server);
+        playQueue(message, server).catch(console.error);
         recordAgain(message, server).catch(console.error);
     } catch(err) {
         console.log(err);
@@ -212,7 +212,7 @@ function resume(message, server) {
 // play queue
 async function playQueue(message, server) {
     dispatcher = connection.play(ytdl(queue[0].url), {filter: 'audioonly', quality: 'highest' });
-    sendToBotChannel(server,"", `**Now playing:** ${queue[0].title}`, `Requested by @${message.user.username}`)
+    sendToBotChannel(server,"", `**Now playing:** ${queue[0].title}`, `Requested by @${message.user.username}`).catch(console.error);
     console.log("playing......");
     dispatcher.on("finish", () => {
         queue.shift();
@@ -226,7 +226,7 @@ async function playQueue(message, server) {
 }
 
 // make it possible to recordAgain when none of the commands is spoken
-async function recordAgain(message, server) {
+function recordAgain(message, server) {
     if (message.voice.channel) {
         const audio = connection.receiver.createStream(message, {
             mode: "pcm",
@@ -236,7 +236,7 @@ async function recordAgain(message, server) {
         writer.on("finish", () => {
             fs.createReadStream(`./member-voiceLogs/VoiceLog_${message.user.username}.wav`)
             SpeechToText(message, server).catch();
-        })
+        });
     }
 }
 
