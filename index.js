@@ -5,29 +5,57 @@ const { data } = require('./chema.json');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
+client.MemberStatus = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
     client.commands.set(command.name, command);
 }
-const cooldowns = new Discord.Collection();
 
+const cooldowns = new Discord.Collection();
 let msg;
 client.once('ready', async () => {
+    // console.log(client);
     console.log(`Logged in as ${client.user.tag}!`)
-    // console.log(client.channels.cache);
-    // Send message & Store reference to the message
-    const embed = new Discord.MessageEmbed()
-        .setTitle("Starting soon...")
-    msg = await client.channels.cache.get("811539777722515456").send(embed);
-
     setInterval(() => {
-        checklesson();
-    }, 10000);
+        joinChannel();
+    }, 1000);
+    // checklesson
 });
 
 client.login(token)
+
+function joinChannel() {
+    // console.log(client.guilds.cache.length);
+    client.guilds.cache.forEach(server => { // for every Server
+        var first = true;
+        server.channels.cache.filter((c) => c.type == 'voice').forEach((voicechannel) => { // for every voicechannel in that server
+            const playersInChannel = [];
+            let prevmember = [];
+            if (first == true) {
+                voicechannel.members.forEach((member) => { // For every member
+                    member.voice.channel.join();
+                    playersInChannel.push(member.user.username)
+                    prevmember.push(member)
+                    if (member.user.username != client.user.username && client.commands.get("voice").executed == false) {
+                        try {
+                            // hitta ett sätt att se om commandot redan är initierat
+                            client.commands.get("voice").execute(member, server)
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }
+                });
+                client.commands.get("voice").executed = true;
+                first = false;
+            };
+            if (playersInChannel.length == 1 && playersInChannel[0] == client.user.username) {
+                prevmember[0].voice.channel.leave();
+            }
+        });
+    });
+}
 
 client.on('message', async message => {
     if (message.content.substring(0, 1) == prefix) {
@@ -52,6 +80,7 @@ client.on('message', async message => {
 
             return message.channel.send(reply);
             //return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+            //--------------------------------------------------------------------------------------- alla send functioner behöver fixas ------------------------------------------------------
         }
 
         if (!cooldowns.has(command.name)) {
@@ -73,7 +102,7 @@ client.on('message', async message => {
         timestamps.set(message.author.id, now);
         setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
         try {
-            command.execute(message, args);
+            command.execute(message, args, client);
         } catch (error) {
             console.error(error);
             message.reply('There was an error trying to execute that command!')
@@ -122,8 +151,8 @@ function checklesson(){
             unorderedLesTime.push(StartInMinutes)
             orderedLesEnd.push(EndInMinutes)
             unordedLessons.push(lesson)
-            StartTimeInNormalTime.push(element.timeStart.substring(0, element.timeStart.length-3))
-            EndTimeInNormalTime.push(element.timeEnd.substring(0, element.timeEnd.length-3))
+            StartTimeInNormalTime.push(element.timeStart.substring(0, element.timeStart.length-3));
+            EndTimeInNormalTime.push(element.timeEnd.substring(0, element.timeEnd.length-3));
         }
     });
 
