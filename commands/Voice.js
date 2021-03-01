@@ -163,7 +163,7 @@ async function play(search, message, server) {
             queue[0] = {title: items[0].snippet.title, url: url};
         });
         console.log(queue);
-        playQueue(message, server).catch(console.error);
+        playQueue(message, server)
         recordAgain(message, server).catch(console.error);
     } catch(err) {
         console.log(err);
@@ -213,7 +213,7 @@ function resume(message, server) {
 // play queue
 async function playQueue(message, server) {
     dispatcher = connection.play(ytdl(queue[0].url), {filter: 'audioonly', quality: 'highest' });
-    sendToBotChannel(server,"", `**Now playing:** ${queue[0].title}`, `Requested by @${message.user.username}`).catch(console.error);
+    sendToBotChannel(server,"", `**Now playing:** ${queue[0].title}`, `Requested by @${message.user.username}`)
     console.log("playing......");
     dispatcher.on("finish", () => {
         queue.shift();
