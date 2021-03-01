@@ -242,14 +242,18 @@ function recordAgain(message, server) {
 }
 
 function sendToBotChannel(server, title, description, footer) {
-    server.channels.cache.filter((c) => c.type == 'text').forEach((textchannel) => {
-        if (textchannel.name == "bot") {
-            embed = new Discord.MessageEmbed()
-            .setColor("#0036FF")
-            .setTitle(title)
-            .setDescription(description)
-            .setFooter(footer)
-            textchannel.send(embed);
-        }
-    })
+    try {
+        server.channels.cache.filter((c) => c.type == 'text').forEach((textchannel) => {
+            if (textchannel.name == "bot") {
+                embed = new Discord.MessageEmbed()
+                .setColor("#0036FF")
+                .setTitle(title)
+                .setDescription(description)
+                .setFooter(footer)
+                textchannel.send(embed);
+            }
+        })   
+    } catch (error) {
+        console.log(error);
+    }
 }
