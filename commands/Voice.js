@@ -130,7 +130,11 @@ async function SpeechToText(message, server) {
         resume(message);
     }
     else {
-        recordAgain(message, server).catch(console.error);
+        try {
+            recordAgain(message, server)
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 
