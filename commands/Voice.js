@@ -16,7 +16,8 @@ module.exports = {
 	aliases: ['rec'],
 	args: true,
 	argsNeeded: false,
-    executed: false,
+	usage: 'Commands:\nplay <youtube search>\nSearch <youtube search> gives you five alternatives\nlägg till <number 1-5>add song from search to queue\nplay number <number 1-5> lets you play a song from the latest search\n"skip" or "next"\n"pause" and "resume"'
+    	executed: false,
 	async execute(message, server) {
         // this.executed = true;
 		if (message.voice.channel) {
@@ -115,7 +116,7 @@ async function SpeechToText(message, server) {
             }
             playQueue(message, server);
         } catch (error) {
-            console.log("queue empty");
+            sendToBotChannel(server, "", "Queue empty", "")
         }
         // ------------------------------------------------------------------------- testa "next" "next"
         // playQueue(message, server).catch(dispatcher = "");
@@ -220,7 +221,7 @@ async function playQueue(message, server) {
             playQueue(message, server);
         }
         else {
-            console.log("queue epmty");
+            sendToBotChannel(server, "", "Queue empty", "")
         }
     });
 }
