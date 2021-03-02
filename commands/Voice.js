@@ -28,7 +28,6 @@ module.exports = {
             });
             
             const writer = audio.pipe(fs.createWriteStream(`./member-voiceLogs/VoiceLog_${message.user.username}.wav`));
-            // main().catch(console.error);
             writer.on("finish", () => {
                 fs.createReadStream(`./member-voiceLogs/VoiceLog_${message.user.username}.wav`)
                 SpeechToText(message, server).catch(console.error);
@@ -56,7 +55,7 @@ async function SpeechToText(message, server) {
         };
         const config = {
             encoding: "LINEAR16",
-            sampleRateHertz: 44100,
+            sampleRateHertz: 16000,
             languageCode: "sv-SV",
             audioChannelCount: 2
         };
@@ -71,7 +70,6 @@ async function SpeechToText(message, server) {
             // message.send(`What I heard: ${transcription}`).catch(console.error);
             console.log(`Transcription: ${transcription}`);
         }
-
         // ------------------------------------------------------------------------------------------------
         // --------------------------check the response ---------------------------------------------------
         // ------------------------------------------------------------------------------------------------
@@ -123,6 +121,7 @@ async function SpeechToText(message, server) {
         }
         recordAgain(message, server);
     } catch (error) {
+        recordAgain(message, server);
         console.log(error);
     }
 }
