@@ -121,7 +121,7 @@ async function SpeechToText(message, server) {
         }
         recordAgain(message, server);
     } catch (error) {
-        recordAgain(message, server);
+        // recordAgain(message, server);
         console.log(error);
     }
 }
