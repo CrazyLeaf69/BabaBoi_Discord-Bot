@@ -103,7 +103,7 @@ async function SpeechToText(message, server) {
             if (word[2]=="tre") {number = 2;}
             if (word[2]=="fyra") {number = 3;}
             if (word[2]=="fem") {number = 4;}
-            addToQueue(number);
+            addToQueue(number, server);
         }
         else if (transcription.includes("skip")||transcription.includes("next")) {
             try {
@@ -187,9 +187,15 @@ async function search(search, message, server) {
         console.log(err);
     };
 }
-function addToQueue(number) {
+function addToQueue(number, server) {
     queue.push({title: searchResults[number].title, url: searchResults[number].url});
+    let queueTitles = "";
+    for (let i = 0; i < queue.length; i++) {
+        const song = queue[i];
+        queueTitles += `${i+1}: ${song.title}\n`;
+    }
     console.log(queue);
+    sendToBotChannel(server, "Current queue:", queueTitles, "");
 }
 function pause(message, server) {
     dispatcher.pause(message);
