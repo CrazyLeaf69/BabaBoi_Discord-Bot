@@ -27,7 +27,7 @@ module.exports = {
                 end: "silence"
             });
             
-            const writer = audio.pipe(fs.createWriteStream(`./member-voiceLogs/VoiceLog_${message.user.username}.wav`));
+            const writer = audio.pipe(fs.createWriteStream(`./member-voiceLogs/VoiceLog_${message.user.username}.wav`))
             writer.on("finish", () => {
                 fs.createReadStream(`./member-voiceLogs/VoiceLog_${message.user.username}.wav`)
                 SpeechToText(message, server).catch(console.error);
@@ -69,7 +69,7 @@ async function SpeechToText(message, server) {
         if (transcription != "") {
             // message.send(`What I heard: ${transcription}`).catch(console.error);
             console.log(`Transcription: ${transcription}`);
-        }
+        };
         // ------------------------------------------------------------------------------------------------
         // --------------------------check the response ---------------------------------------------------
         // ------------------------------------------------------------------------------------------------
@@ -89,7 +89,7 @@ async function SpeechToText(message, server) {
                 queue[0] = {title: searchResults[word[2]-1].title, url: searchResults[word[2]-1].url};
             }
             console.log(queue);
-            playQueue(message, server);
+            playQueue(message, server)
         }
         else if (word[0]=="search") {
             search(searchWords, message, server);
@@ -111,7 +111,7 @@ async function SpeechToText(message, server) {
                 playQueue(message, server);
             } catch (error) {
                 sendToBotChannel(server, "", "Queue empty", "")
-            }
+            };
         }
         else if (transcription.includes("pause")||transcription.includes("pausa")) {
             pause(message);
@@ -138,7 +138,8 @@ async function speak(message, server) {
     dispatcher = connection.play(ytdl(url), {filter: 'audioonly', quality: 'highest' });
     dispatcher.on('error', console.error);
     console.log("spoke");
-}
+};
+
 async function play(search, message, server) {
     try {
         let url = "";
@@ -158,7 +159,7 @@ async function play(search, message, server) {
     } catch(err) {
         console.log(err);
     };
-}
+};
 
 async function search(search, message, server) {
     let i = 0;
@@ -185,7 +186,8 @@ async function search(search, message, server) {
     } catch(err) {
         console.log(err);
     };
-}
+};
+
 function addToQueue(number, server) {
     queue.push({title: searchResults[number].title, url: searchResults[number].url});
     let queueTitles = "";
@@ -198,10 +200,11 @@ function addToQueue(number, server) {
 }
 function pause(message, server) {
     dispatcher.pause(message);
-}
+};
 function resume(message, server) {
     dispatcher.resume(message);
-}
+};
+
 // ----------------------------------------------------------------------------------
 // play queue
 async function playQueue(message, server) {
@@ -217,7 +220,7 @@ async function playQueue(message, server) {
             sendToBotChannel(server, "", "Queue empty", "")
         }
     });
-}
+};
 
 // make it possible to recordAgain when none of the commands is spoken
 function recordAgain(message, server) {
