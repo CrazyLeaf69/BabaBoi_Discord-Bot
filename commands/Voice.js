@@ -141,51 +141,43 @@ async function speak(message, server) {
 };
 
 async function play(search, message, server) {
-    try {
-        let url = "";
-        const fetch = require("node-fetch");
-        url = "https://www.youtube.com/watch?v=NCFg7G63KgI";
-        await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${search}&type=video&key=AIzaSyD4q3HFuGrKvo7qpB0-wsJYWnKiWwZGILM`)
-        .then(res => res.json()).then(data => {
-            const items = data.items;
-            const videoId = items[0].id.videoId;
-            url = `https://www.youtube.com/watch?v=${videoId}`;
-            console.log(items[0].snippet.title);
-            console.log(url);
-            queue[0] = {title: items[0].snippet.title, url: url};
-        });
-        console.log(queue);
-        playQueue(message, server)
-    } catch(err) {
-        console.log(err);
-    };
+    let url = "";
+    const fetch = require("node-fetch");
+    url = "https://www.youtube.com/watch?v=NCFg7G63KgI";
+    await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${search}&type=video&key=AIzaSyD4q3HFuGrKvo7qpB0-wsJYWnKiWwZGILM`)
+    .then(res => res.json()).then(data => {
+        const items = data.items;
+        const videoId = items[0].id.videoId;
+        url = `https://www.youtube.com/watch?v=${videoId}`;
+        console.log(items[0].snippet.title);
+        console.log(url);
+        queue[0] = {title: items[0].snippet.title, url: url};
+    });
+    console.log(queue);
+    playQueue(message, server)
 };
 
 async function search(search, message, server) {
     let i = 0;
     let url = "";
     const fetch = require("node-fetch");
-    try {
-        searchResults = [];
-        await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${search}&type=video&key=AIzaSyD4q3HFuGrKvo7qpB0-wsJYWnKiWwZGILM`)
-        .then(res => res.json()).then(data => {
-            const items = data.items;
-            var embedResults = "";
-            items.forEach(item => {
-                if (item.id.kind == "youtube#video") {
-                    const title = item.snippet.title;
-                    const videoId = item.id.videoId;
-                    url = `https://www.youtube.com/watch?v=${videoId}`;
-                    searchResults.push({title: title, url: url});
-                    i+=1
-                    embedResults += `${i}: ${title}\n`;
-                }
-            });
-            sendToBotChannel(server, `Searchresults for: "${search}"`, embedResults, "")
+    searchResults = [];
+    await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${search}&type=video&key=AIzaSyD4q3HFuGrKvo7qpB0-wsJYWnKiWwZGILM`)
+    .then(res => res.json()).then(data => {
+        const items = data.items;
+        var embedResults = "";
+        items.forEach(item => {
+            if (item.id.kind == "youtube#video") {
+                const title = item.snippet.title;
+                const videoId = item.id.videoId;
+                url = `https://www.youtube.com/watch?v=${videoId}`;
+                searchResults.push({title: title, url: url});
+                i+=1
+                embedResults += `${i}: ${title}\n`;
+            }
         });
-    } catch(err) {
-        console.log(err);
-    };
+        sendToBotChannel(server, `Searchresults for: "${search}"`, embedResults, "")
+    });
 };
 
 function addToQueue(number, server) {
