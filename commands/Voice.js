@@ -55,7 +55,7 @@ async function SpeechToText(message, server) {
         };
         const config = {
             encoding: "LINEAR16",
-            sampleRateHertz: 16000,
+            sampleRateHertz: 44100,
             languageCode: "sv-SV",
             audioChannelCount: 2
         };
