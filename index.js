@@ -29,27 +29,27 @@ client.login(token)
 function joinChannel() {
     // console.log(client.guilds.cache.length);
     client.guilds.cache.forEach(server => { // for every Server
-        var first = true;
+        //var first = true;
         server.channels.cache.filter((c) => c.type == 'voice').forEach((voicechannel) => { // for every voicechannel in that server
             const playersInChannel = [];
             let prevmember = [];
-            if (first == true) {
-                voicechannel.members.forEach((member) => { // For every member
-                    member.voice.channel.join();
-                    playersInChannel.push(member.user.username)
-                    prevmember.push(member)
-                    if (member.user.username != client.user.username && client.commands.get("voice").executed == false) {
-                        try {
-                            // hitta ett sätt att se om commandot redan är initierat
-                            client.commands.get("voice").execute(member, server)
-                        } catch (error) {
-                            console.log(error);
-                        }
+           
+            voicechannel.members.forEach((member) => { // For every member
+                member.voice.channel.join();
+                playersInChannel.push(member.user.username)
+                prevmember.push(member)
+                if (member.user.username != client.user.username && client.commands.get("voice").executed == false) {
+                    try {
+                        // hitta ett sätt att se om commandot redan är initierat
+                        client.commands.get("voice").execute(member, server)
+                    } catch (error) {
+                        console.log(error);
                     }
-                });
-                client.commands.get("voice").executed = true;
-                first = false;
-            };
+                }
+            });
+            client.commands.get("voice").executed = true;
+            //st = false;
+            
             if (playersInChannel.length == 1 && playersInChannel[0] == client.user.username) {
                 prevmember[0].voice.channel.leave();
             }
