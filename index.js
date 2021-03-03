@@ -29,7 +29,8 @@ client.login(token)
 function joinChannel() {
     // console.log(client.guilds.cache.length);
     client.guilds.cache.forEach(server => { // for every Server
-        var first = true;
+        if (server.id != "651518721327628308") {
+            var first = true;
             server.channels.cache.filter((c) => c.type == 'voice').forEach((voicechannel) => { // for every voicechannel in that server
                 const playersInChannel = [];
                 let prevmember = [];
@@ -55,6 +56,8 @@ function joinChannel() {
                 prevmember[0].voice.channel.leave();
             }
         });
+        }
+        
     });
 }
 
