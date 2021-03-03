@@ -18,9 +18,9 @@ let msg;
 client.once('ready', async () => {
     // console.log(client);
     console.log(`Logged in as ${client.user.tag}!`)
-    setInterval(() => {
+    setTimeout(() => {
         joinChannel();
-    }, 1000);
+    }, 5000);
     // checklesson
 });
 
