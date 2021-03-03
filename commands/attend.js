@@ -9,7 +9,7 @@ module.exports = {
 	argsNeeded: true,
 
 	async execute(message, args, client) {
-		let attendanceList = "**Närvarolista:**\n";
+		let attendanceList = "**Kommer:**\n";
 		let i = 1;
 		embed = new Discord.MessageEmbed()
 			.setTitle(message.content.split(" ").splice(1).join(" "))
