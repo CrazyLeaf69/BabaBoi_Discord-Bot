@@ -29,36 +29,36 @@ client.login(token)
 function joinChannel() {
     // console.log(client.guilds.cache.length);
     client.guilds.cache.forEach(server => { // for every Server
-        // if (server.id != "651518721327628308") {
-        var first = true;
-        server.channels.cache.filter((c) => c.type == 'voice').forEach((voicechannel) => { // for every voicechannel in that server
-            const playersInChannel = [];
-            let prevmember = [];
-            if (first == true) {
-                first = false;
-                voicechannel.members.forEach((member) => { // For every member
-                    member.voice.channel.join();
-                    playersInChannel.push(member.user.username)
-                    prevmember.push(member)
-                    if (member.user.username != client.user.username && client.commands.get("voice").executed == false) {
-                        try {
-                            // hitta ett sätt att se om commandot redan är initierat
-                            client.commands.get("voice").execute(member, server)
-                        } catch (error) {
-                            console.log(error);
+        if (server.id != "651518721327628308") {
+            var first = true;
+            server.channels.cache.filter((c) => c.type == 'voice').forEach((voicechannel) => { // for every voicechannel in that server
+                const playersInChannel = [];
+                let prevmember = [];
+                if (first == true) {
+                    first = false;
+                    voicechannel.members.forEach((member) => { // For every member
+                        member.voice.channel.join();
+                        playersInChannel.push(member.user.username)
+                        prevmember.push(member)
+                        if (member.user.username != client.user.username && client.commands.get("voice").executed == false) {
+                            try {
+                                // hitta ett sätt att se om commandot redan är initierat
+                                client.commands.get("voice").execute(member, server)
+                            } catch (error) {
+                                console.log(error);
+                            }
                         }
-                    }
-                });
+                    });
+                    
+                }
+                client.commands.get("voice").executed = true;
                 
-            }
-            client.commands.get("voice").executed = true;
-            
-            if (playersInChannel.length == 1 && playersInChannel[0] == client.user.username) {
-                prevmember[0].voice.channel.leave();
-                // client.commands.get("voice").executed = false;
-            }
-        });
-        // }
+                if (playersInChannel.length == 1 && playersInChannel[0] == client.user.username) {
+                    prevmember[0].voice.channel.leave();
+                    // client.commands.get("voice").executed = false;
+                }
+            });
+        }
         first = true;
     });
 }
