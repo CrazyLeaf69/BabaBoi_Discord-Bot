@@ -222,8 +222,7 @@ async function playQueue(message, server) {
 };
 
 // make it possible to recordAgain when none of the commands is spoken
-async function recordAgain(message, server) {
-    connection = await message.voice.channel.join()
+function recordAgain(message, server) {
     if (message.voice.channel) {
         const audio = connection.receiver.createStream(message, {
             mode: "pcm",
