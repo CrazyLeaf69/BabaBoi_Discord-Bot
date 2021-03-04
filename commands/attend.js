@@ -32,6 +32,6 @@ module.exports = {
 				msg.edit(embed);
 				i++;
 			}
-		});
+		}, {time: 172800000});
 	},
 };

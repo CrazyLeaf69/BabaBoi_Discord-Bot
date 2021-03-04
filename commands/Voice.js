@@ -4,7 +4,6 @@ const fs = require("fs")
 const ytdl = require('ytdl-core');
 let connection = "";
 let dispatcher = "";
-// kanske connection är problemet till "only one server" 
 
 // write in terminal
 // $env:GOOGLE_APPLICATION_CREDENTIALS="testing-speech-305723-119352bb231c.json"
@@ -17,9 +16,7 @@ module.exports = {
 	args: true,
 	argsNeeded: false,
 	usage: 'Commands:\nplay <youtube search>\nSearch <youtube search> gives you five alternatives\nlägg till <number 1-5>add song from search to queue\nplay number <number 1-5> lets you play a song from the latest search\n"skip" or "next"\n"pause" and "resume"',
-    	executed: false,
 	async execute(message, server) {
-        // this.executed = true;
 		if (message.voice.channel) {
             connection = await message.voice.channel.join();
             const audio = connection.receiver.createStream(message, {
@@ -135,49 +132,58 @@ let queue = [];
 
 async function speak(message, server) {
     var url = 'https://www.youtube.com/watch?v=U_cPir6MwLM';
+    connection = await message.voice.channel.join()
     dispatcher = connection.play(ytdl(url), {filter: 'audioonly', quality: 'highest' });
     dispatcher.on('error', console.error);
     console.log("spoke");
 };
 
 async function play(search, message, server) {
-    let url = "";
-    const fetch = require("node-fetch");
-    url = "https://www.youtube.com/watch?v=NCFg7G63KgI";
-    await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${search}&type=video&key=AIzaSyD4q3HFuGrKvo7qpB0-wsJYWnKiWwZGILM`)
-    .then(res => res.json()).then(data => {
-        const items = data.items;
-        const videoId = items[0].id.videoId;
-        url = `https://www.youtube.com/watch?v=${videoId}`;
-        console.log(items[0].snippet.title);
-        console.log(url);
-        queue[0] = {title: items[0].snippet.title, url: url};
-    });
-    console.log(queue);
-    playQueue(message, server)
+    try {
+        let url = "";
+        const fetch = require("node-fetch");
+        url = "https://www.youtube.com/watch?v=NCFg7G63KgI";
+        await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${search}&type=video&key=AIzaSyD4q3HFuGrKvo7qpB0-wsJYWnKiWwZGILM`)
+        .then(res => res.json()).then(data => {
+            const items = data.items;
+            const videoId = items[0].id.videoId;
+            url = `https://www.youtube.com/watch?v=${videoId}`;
+            console.log(items[0].snippet.title);
+            console.log(url);
+            queue[0] = {title: items[0].snippet.title, url: url};
+        });
+        console.log(queue);
+        playQueue(message, server)
+    } catch(err) {
+        console.log(err);
+    };
 };
 
 async function search(search, message, server) {
     let i = 0;
     let url = "";
     const fetch = require("node-fetch");
-    searchResults = [];
-    await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${search}&type=video&key=AIzaSyD4q3HFuGrKvo7qpB0-wsJYWnKiWwZGILM`)
-    .then(res => res.json()).then(data => {
-        const items = data.items;
-        var embedResults = "";
-        items.forEach(item => {
-            if (item.id.kind == "youtube#video") {
-                const title = item.snippet.title;
-                const videoId = item.id.videoId;
-                url = `https://www.youtube.com/watch?v=${videoId}`;
-                searchResults.push({title: title, url: url});
-                i+=1
-                embedResults += `${i}: ${title}\n`;
-            }
+    try {
+        searchResults = [];
+        await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${search}&type=video&key=AIzaSyD4q3HFuGrKvo7qpB0-wsJYWnKiWwZGILM`)
+        .then(res => res.json()).then(data => {
+            const items = data.items;
+            var embedResults = "";
+            items.forEach(item => {
+                if (item.id.kind == "youtube#video") {
+                    const title = item.snippet.title;
+                    const videoId = item.id.videoId;
+                    url = `https://www.youtube.com/watch?v=${videoId}`;
+                    searchResults.push({title: title, url: url});
+                    i+=1
+                    embedResults += `${i}: ${title}\n`;
+                }
+            });
+            sendToBotChannel(server, `Searchresults for: "${search}"`, embedResults, "")
         });
-        sendToBotChannel(server, `Searchresults for: "${search}"`, embedResults, "")
-    });
+    } catch(err) {
+        console.log(err);
+    };
 };
 
 function addToQueue(number, server) {
@@ -200,6 +206,7 @@ function resume(message, server) {
 // ----------------------------------------------------------------------------------
 // play queue
 async function playQueue(message, server) {
+    connection = await message.voice.channel.join()
     dispatcher = connection.play(ytdl(queue[0].url), {filter: 'audioonly', quality: 'highest' });
     sendToBotChannel(server,"", `**Now playing:** ${queue[0].title}`, `Requested by @${message.user.username}`)
     console.log("playing......");
@@ -216,6 +223,7 @@ async function playQueue(message, server) {
 
 // make it possible to recordAgain when none of the commands is spoken
 function recordAgain(message, server) {
+    connection = await message.voice.channel.join()
     if (message.voice.channel) {
         const audio = connection.receiver.createStream(message, {
             mode: "pcm",

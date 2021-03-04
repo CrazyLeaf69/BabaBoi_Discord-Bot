@@ -28,40 +28,34 @@ client.login(token)
 
 function joinChannel() {
     // console.log(client.guilds.cache.length);
-    client.guilds.cache.forEach(server => { // for every Server
-        if (server.id != "651518721327628308") {
-            var first = true;
-            server.channels.cache.filter((c) => c.type == 'voice').forEach((voicechannel) => { // for every voicechannel in that server
-                const playersInChannel = [];
-                let prevmember = [];
-                if (first == true) {
-                    first = false;
-                    voicechannel.members.forEach((member) => { // For every member
-                        member.voice.channel.join();
-                        playersInChannel.push(member.user.username)
-                        prevmember.push(member)
-                        if (member.user.username != client.user.username && client.commands.get("voice").executed == false) {
-                            try {
-                                // hitta ett sätt att se om commandot redan är initierat
-                                client.commands.get("voice").execute(member, server)
-                            } catch (error) {
-                                console.log(error);
-                            }
-                        }
-                    });
-                    
-                }
-                client.commands.get("voice").executed = true;
-                
-                if (playersInChannel.length == 1 && playersInChannel[0] == client.user.username) {
-                    prevmember[0].voice.channel.leave();
-                    // client.commands.get("voice").executed = false;
-                }
-            });
+    const serverCache = client.guilds.cache.array()
+    serverCache.forEach(server => {
+        const firstChannelinServer = server.channels.cache.filter((c) => c.type == 'voice').array()[0];
+        const playersInChannel = [];
+        firstChannelinServer.members.forEach((member) => { // For every member
+        playersInChannel.push(member.user.username)
+        });
+        if (playersInChannel.length == 1 && playersInChannel[0] == client.user.username) {
+            firstChannelinServer.leave();
         }
-        first = true;
     });
 }
+client.on('voiceStateUpdate', (oldMember, newMember) => {
+    try {
+        const firstChannelinServer = newMember.guild.channels.cache.filter((c) => c.type == 'voice').array()[0];
+        if (oldMember.channelID === null && newMember.id != client.user.id) {
+            firstChannelinServer.join();
+            const user = firstChannelinServer.members.find(user => user.id === newMember.id)
+            console.log(`${user.nickname || user.user.username} joined`);
+            client.commands.get("voice").execute(user, newMember.guild)
+        }
+        else if (newMember.channelID === null && oldMember.id != client.user.id) {
+           console.log("someone left");
+        }
+    } catch (error) {
+        console.log(error);
+    }
+  })
 
 client.on('message', async message => {
     if (message.content.substring(0, 1) == prefix) {
