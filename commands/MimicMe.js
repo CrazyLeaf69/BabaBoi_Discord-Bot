@@ -1,8 +1,8 @@
 const fs = require("fs")
 
 module.exports = {
-	name: 'mimi',
-	description: 'Enables voicerecognition',
+	name: 'mimic',
+	description: 'mimics what u just said',
 	aliases: 'm',
 	args: true,
 	argsNeeded: false,

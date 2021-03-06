@@ -24,4 +24,3 @@ module.exports = {
 		message.channel.send(`Command \`${command.name}\` was reloaded!`);
 	},
 };
-//Reload och Server funkar inte med help command.
