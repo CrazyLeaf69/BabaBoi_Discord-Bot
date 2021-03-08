@@ -21,7 +21,15 @@ client.once('ready', async () => {
     setInterval(() => {
         joinChannel();
     }, 1000);
-    msg = client.guilds.channels.cache.get("811539777722515456").send("starting soon")
+    const serverCache = client.guilds.cache.array()
+    serverCache.forEach(server => {
+    const lektionChannelinServer = server.channels.cache.filter((c) => c.type == 'text').array();
+    lektionChannelinServer.forEach(element => {
+        if (element.id == "811539777722515456") {
+            msg = element.send("starting soon")
+
+        }
+    });
     setInterval(() => {
         checklesson();
     }, 1000);
