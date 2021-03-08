@@ -21,7 +21,10 @@ client.once('ready', async () => {
     setInterval(() => {
         joinChannel();
     }, 1000);
-    // checklesson
+    msg = client.guilds.channels.cache.get("811539777722515456").send("starting soon")
+    setInterval(() => {
+        checklesson();
+    }, 1000);
 });
 
 client.login(token)
