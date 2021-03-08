@@ -24,11 +24,12 @@ client.once('ready', async () => {
     const serverCache = client.guilds.cache.array()
     serverCache.forEach(server => {
     const lektionChannelinServer = server.channels.cache.filter((c) => c.type == 'text').array();
-    lektionChannelinServer.forEach(element => {
-        if (element.id == "811539777722515456") {
-            msg = element.send("starting soon")
+        lektionChannelinServer.forEach(element => {
+            if (element.id == "811539777722515456") {
+                msg = element.send("starting soon")
 
-        }
+            }
+        });
     });
     setInterval(() => {
         checklesson();
