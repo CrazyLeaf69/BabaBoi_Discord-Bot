@@ -21,6 +21,10 @@ client.once('ready', async () => {
     setInterval(() => {
         joinChannel();
     }, 1000);
+    
+    // delete one message in lesson channels
+    client.channels.cache.get("811539777722515456").bulkDelete(1, true).catch(err => {console.error(err);});
+    
     // Send message & Store reference to the message
     const embed = new Discord.MessageEmbed()
         .setTitle("Starting soon...")
@@ -127,7 +131,7 @@ function checklesson(){
     var min = date.getMinutes();
 
     // the amount of minutes that has passed;
-    var current = (h*60) + min + 60;
+    var current = (h*60) + min + 120;
 
     // array of all lesson objects
     const LessonInfo = data.lessonInfo
