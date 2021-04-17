@@ -56,7 +56,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
         const firstChannelinServer = newMember.guild.channels.cache.filter((c) => c.type == 'voice').array()[0];
         if (oldMember.channelID === null && newMember.id != client.user.id) {
             // firstChannelinServer.join();
-            // const user = firstChannelinServer.members.find(user => user.id === newMember.id)
+            const user = firstChannelinServer.members.find(user => user.id === newMember.id)
             console.log(`${user.nickname || user.user.username} joined`);
             // client.commands.get("voice").execute(user, newMember.guild)
         }
