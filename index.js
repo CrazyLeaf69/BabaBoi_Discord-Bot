@@ -55,10 +55,10 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
     try {
         const firstChannelinServer = newMember.guild.channels.cache.filter((c) => c.type == 'voice').array()[0];
         if (oldMember.channelID === null && newMember.id != client.user.id) {
-            firstChannelinServer.join();
-            const user = firstChannelinServer.members.find(user => user.id === newMember.id)
+            // firstChannelinServer.join();
+            // const user = firstChannelinServer.members.find(user => user.id === newMember.id)
             console.log(`${user.nickname || user.user.username} joined`);
-            client.commands.get("voice").execute(user, newMember.guild)
+            // client.commands.get("voice").execute(user, newMember.guild)
         }
         else if (newMember.channelID === null && oldMember.id != client.user.id) {
            console.log("someone left");
