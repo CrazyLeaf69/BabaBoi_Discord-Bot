@@ -18,9 +18,9 @@ let msg;
 client.once('ready', async () => {
     // console.log(client);
     console.log(`Logged in as ${client.user.tag}!`)
-    setInterval(() => {
-        joinChannel();
-    }, 1000);
+    // setInterval(() => {
+    //     joinChannel();
+    // }, 1000);
     
     // delete one message in lesson channels
     client.channels.cache.get("811539777722515456").bulkDelete(1, true).catch(err => {console.error(err);});
@@ -37,20 +37,20 @@ client.once('ready', async () => {
 
 client.login(token)
 
-function joinChannel() {
-    // console.log(client.guilds.cache.length);
-    const serverCache = client.guilds.cache.array()
-    serverCache.forEach(server => {
-        const firstChannelinServer = server.channels.cache.filter((c) => c.type == 'voice').array()[0];
-        const playersInChannel = [];
-        firstChannelinServer.members.forEach((member) => { // For every member
-        playersInChannel.push(member.user.username)
-        });
-        if (playersInChannel.length == 1 && playersInChannel[0] == client.user.username) {
-            firstChannelinServer.leave();
-        }
-    });
-}
+// function joinChannel() {
+//     // console.log(client.guilds.cache.length);
+//     const serverCache = client.guilds.cache.array()
+//     serverCache.forEach(server => {
+//         const firstChannelinServer = server.channels.cache.filter((c) => c.type == 'voice').array()[0];
+//         const playersInChannel = [];
+//         firstChannelinServer.members.forEach((member) => { // For every member
+//         playersInChannel.push(member.user.username)
+//         });
+//         if (playersInChannel.length == 1 && playersInChannel[0] == client.user.username) {
+//             firstChannelinServer.leave();
+//         }
+//     });
+// }
 client.on('voiceStateUpdate', (oldMember, newMember) => {
     try {
         const firstChannelinServer = newMember.guild.channels.cache.filter((c) => c.type == 'voice').array()[0];
