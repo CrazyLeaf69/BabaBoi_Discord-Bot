@@ -3,8 +3,10 @@ module.exports = {
 	args: true,
 	argsNeeded: false,
 	execute(message) {
+	    console.log("first")
 	    const kalle = message.guild.members.cache.get("604355269962629170")
 	    let testRole = message.guild.roles.cache.find(role => role.id == "848597369321685022")
 	    kalle.roles.add(testRole)
+	    console.log("second")
 	},
 };
