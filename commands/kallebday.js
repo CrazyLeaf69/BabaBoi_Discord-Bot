@@ -4,8 +4,8 @@ module.exports = {
 	argsNeeded: false,
 	execute(message) {
 	    console.log("first")
-	    const kalle = message.guild.members.cache.get("604355269962629170")
-	    let testRole = message.guild.roles.cache.find(role => role.id == "848597369321685022")
+	    const kalle = message.guild.members.cache.get("248026739966476288")
+	    let testRole = message.guild.roles.cache.find(role => role.id == "716249696217202729")
 	    kalle.roles.add(testRole)
 	    console.log("second")
 	},
