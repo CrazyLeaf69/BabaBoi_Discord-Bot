@@ -68,11 +68,7 @@ client.login(token)
 //     }
 //   })
 
-client.on('message', async message => {
-    const member = message.mentions.members.first();
-        let testRole = message.guild.roles.cache.find(role => role.id == "716249696217202729")
-        member.roles.add(testRole)
-	
+client.on('message', async message => {	
     if (message.content.substring(0, 1) == prefix) {
         const args = message.content.slice(prefix.length).trim().split(/ +/)
         const commandName = args.shift().toLowerCase();
