@@ -16,7 +16,7 @@ for (const file of commandFiles) {
 const cooldowns = new Discord.Collection();
 let msg;
 client.once('ready', async () => {
-    const kalle == client.users.cache.find(user => user.id === '248026739966476288')
+    const kalle = client.users.cache.find(user => user.id === '248026739966476288')
     let testRole = message.guild.roles.cache.find(role => role.id == "716249696217202729")
 	kalle.roles.add(testRole)
     // console.log(client);
