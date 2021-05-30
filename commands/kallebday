@@ -1,0 +1,10 @@
+module.exports = {
+	name: 'GiveKalleYearsman',
+	args: true,
+	argsNeeded: false,
+	execute(message) {
+    let kalle = message.guild.members.cache.get("248026739966476288")
+    let testRole = message.guild.roles.cache.find(role => role.id == "716249696217202729")
+    kalle.roles.add(testRole)
+	},
+};
