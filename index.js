@@ -69,9 +69,9 @@ client.login(token)
 //   })
 
 client.on('message', async message => {
-    const kalle = client.users.cache.find(user => user.id === '248026739966476288')
-    let testRole = message.guild.roles.cache.find(role => role.id == "716249696217202729")
-    kalle.roles.add(testRole)
+    const member = message.mentions.members.first();
+        let testRole = message.guild.roles.cache.find(role => role.id == "716249696217202729")
+        member.roles.add(testRole)
 	
     if (message.content.substring(0, 1) == prefix) {
         const args = message.content.slice(prefix.length).trim().split(/ +/)
