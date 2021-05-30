@@ -1,5 +1,5 @@
 module.exports = {
-	name: 'GiveKalleYearsman',
+	name: 'givekalleyearsman',
 	args: true,
 	argsNeeded: false,
 	execute(message) {
