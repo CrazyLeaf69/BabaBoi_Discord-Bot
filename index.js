@@ -1,5 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
+const ytdl = require('ytdl-core');
 const { prefix, token } = require('./config.json');
 const { data } = require('./chema.json');
 
@@ -22,17 +23,17 @@ client.once('ready', async () => {
     //     joinChannel();
     // }, 1000);
     
-    // delete one message in lesson channels
-    client.channels.cache.get("811539777722515456").bulkDelete(1, true).catch(err => {console.error(err);});
+    // // delete one message in lesson channels
+    // client.channels.cache.get("811539777722515456").bulkDelete(1, true).catch(err => {console.error(err);});
     
-    // Send message & Store reference to the message
-    const embed = new Discord.MessageEmbed()
-        .setTitle("Starting soon...")
-    msg = await client.channels.cache.get("811539777722515456").send(embed);
+    // // Send message & Store reference to the message
+    // const embed = new Discord.MessageEmbed()
+    //     .setTitle("Starting soon...")
+    // msg = await client.channels.cache.get("811539777722515456").send(embed);
 
-    setInterval(() => {
-        checklesson();
-    }, 10000);
+    // setInterval(() => {
+    //     checklesson();
+    // }, 10000);
 });
 
 client.login(token)
@@ -69,6 +70,22 @@ client.login(token)
 //   })
 
 client.on('message', async message => {	
+    if (message.content.includes("fortnite")) {
+        if (message.member.voice.channel) {
+            let connection = await message.member.voice.channel.join();
+            const dispatcher = connection.play(ytdl('https://www.youtube.com/watch?v=hjSlY2iBXuw',
+            {filter: 'audioonly'}));
+            
+            //dispatcher.setVolume(0.3);
+            
+            dispatcher.on("finish", finish => {
+                connection = message.member.voice.channel.leave();
+            });
+            
+        }  else {
+            message.reply('You need to join a voice channel first!');
+        }
+    }
     if (message.content.substring(0, 1) == prefix) {
         const args = message.content.slice(prefix.length).trim().split(/ +/)
         const commandName = args.shift().toLowerCase();
@@ -91,7 +108,7 @@ client.on('message', async message => {
 
             return message.channel.send(reply);
             //return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
-            //--------------------------------------------------------------------------------------- alla send functioner behöver fixas ------------------------------------------------------
+            //---------------------------------------- alla send functioner behöver fixas ------------------------------------------------------
         }
 
         if (!cooldowns.has(command.name)) {
@@ -123,6 +140,7 @@ client.on('message', async message => {
 });
 
 // <--------------------------------------------------- Check Lesson -------------------------------------------->
+// this function is not in use due to summer break and no lessons
 function checklesson(){
     // date and time conficuration
     var date = new Date();
