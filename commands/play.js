@@ -1,4 +1,5 @@
-const fs = require("fs")
+const fs = require("fs");
+const ytdl = require("ytdl-core");
 module.exports = {
 	name: 'play',
 	description: 'play recorded audio',
