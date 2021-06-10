@@ -1,1 +1,1 @@
-Worker: npm install ytdl-core@latest
+Worker: node index.js
