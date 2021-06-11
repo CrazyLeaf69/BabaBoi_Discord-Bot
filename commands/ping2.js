@@ -1,7 +1,7 @@
 module.exports = {
     slash: 'both',
     testOnly: true, 
-    description: 'Search for a song from Youtube',
+    description: ' A simple ping pong command',
     callback: ({ message }) => {
         if (message) {
             if (message.content == '!ping') {
