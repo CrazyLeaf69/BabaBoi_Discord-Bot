@@ -1,11 +1,23 @@
+const fs = require('fs');
 const Discord = require('discord.js');
 const ytdl = require('ytdl-core');
 const fetch = require("node-fetch");
 const { prefix, token } = require('./config.json');
 
-
 const guildId = '760980566652616774'
+
 const client = new Discord.Client();
+client.commands = new Discord.Collection();
+client.MemberStatus = new Discord.Collection();
+
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    client.commands.set(command.name, command);
+}
+
+const cooldowns = new Discord.Collection();
+
 
 let searchResults = [];
 let queue = [];
@@ -22,95 +34,95 @@ client.on('ready', async () => {
     console.log(`Logged in as ${client.user.tag}!`)
 
     const commands = await getApp(guildId).commands.get()
-    console.log(commands)
+    // console.log(commands)
 
     // to delete command do this
     // await getApp(guildId).commands('852932282351484928').delete()
 
-    await getApp(guildId).commands.post({
-        data: {
-            name: 'resume',
-            description: 'Resume music',
-        },
-    })
-    await getApp(guildId).commands.post({
-        data: {
-            name: 'leave',
-            description: 'Leave Voicechannel',
-        },
-    })
+    // await getApp(guildId).commands.post({
+    //     data: {
+    //         name: 'resume',
+    //         description: 'Resume music',
+    //     },
+    // })
+    // await getApp(guildId).commands.post({
+    //     data: {
+    //         name: 'leave',
+    //         description: 'Leave Voicechannel',
+    //     },
+    // })
 
-    await getApp(guildId).commands.post({
-        data: {
-            name: 'play',
-            description: 'Play a song from Youtube by search or url',
-            options: [
-                {
-                    name: 'title',
-                    description: 'the song',
-                    required: true,
-                    type: 3
-                }
-            ]
-        },
-    })
+    // await getApp(guildId).commands.post({
+    //     data: {
+    //         name: 'play',
+    //         description: 'Play a song from Youtube by search or url',
+    //         options: [
+    //             {
+    //                 name: 'title',
+    //                 description: 'the song',
+    //                 required: true,
+    //                 type: 3
+    //             }
+    //         ]
+    //     },
+    // })
 
-    await getApp(guildId).commands.post({
-        data: {
-            name: 'search',
-            description: 'Search for a song from Youtube and recieve top 5 results',
-            options: [
-                {
-                    name: 'title',
-                    description: 'Search words',
-                    required: true,
-                    type: 3
-                }
-            ]
-        },
-    })
-    await getApp(guildId).commands.post({
-        data: {
-            name: 'addfromsearch',
-            description: 'Add a song from your searchresult',
-            options: [
-                {
-                    name: 'number',
-                    description: 'Number 1-5',
-                    required: true,
-                    type: 3
-                }
-            ]
-        },
-    })
-    await getApp(guildId).commands.post({
-        data: {
-            name: 'addtoqueue',
-            description: 'Search for a song and add it to the queue',
-            options: [
-                {
-                    name: 'title',
-                    description: 'Title of the song',
-                    required: true,
-                    type: 3
-                }
-            ]
-        },
-    })
+    // await getApp(guildId).commands.post({
+    //     data: {
+    //         name: 'search',
+    //         description: 'Search for a song from Youtube and recieve top 5 results',
+    //         options: [
+    //             {
+    //                 name: 'title',
+    //                 description: 'Search words',
+    //                 required: true,
+    //                 type: 3
+    //             }
+    //         ]
+    //     },
+    // })
+    // await getApp(guildId).commands.post({
+    //     data: {
+    //         name: 'addfromsearch',
+    //         description: 'Add a song from your searchresult',
+    //         options: [
+    //             {
+    //                 name: 'number',
+    //                 description: 'Number 1-5',
+    //                 required: true,
+    //                 type: 3
+    //             }
+    //         ]
+    //     },
+    // })
+    // await getApp(guildId).commands.post({
+    //     data: {
+    //         name: 'addtoqueue',
+    //         description: 'Search for a song and add it to the queue',
+    //         options: [
+    //             {
+    //                 name: 'title',
+    //                 description: 'Title of the song',
+    //                 required: true,
+    //                 type: 3
+    //             }
+    //         ]
+    //     },
+    // })
 
-    await getApp(guildId).commands.post({
-        data: {
-            name: 'skip',
-            description: 'skip a song in the queue',
-        },
-    })
+    // await getApp(guildId).commands.post({
+    //     data: {
+    //         name: 'skip',
+    //         description: 'skip a song in the queue',
+    //     },
+    // })
 
-    await getApp(guildId).commands.post({
-        data: {
-            name: 'pause',
-            description: 'Pause music',
-        },
-    })
+    // await getApp(guildId).commands.post({
+    //     data: {
+    //         name: 'pause',
+    //         description: 'Pause music',
+    //     },
+    // })
 
     client.ws.on('INTERACTION_CREATE', async (interaction) => {
         const { name, options } = interaction.data
@@ -269,39 +281,48 @@ function leave(interaction) {
     const member = guild.members.cache.get(interaction.member.user.id);
     const voiceChannel = member.voice.channel;
     voiceChannel.leave();
-    reply(interaction, `left voicechannel: ${voiceChannel.name}`)
+    sendEmbed(interaction, '', `Left voicechannel: **${voiceChannel.name}**`, '')
+    reply(interaction, `Left voicechannel: **${voiceChannel.name}**`)
 }
-function pause(message, server) {
-    dispatcher.pause(message);
-};
-function resume(message, server) {
-    dispatcher.resume(message);
-};
 
 async function playQueue(interaction) {
     const guild = client.guilds.cache.get(interaction.guild_id)
     const member = guild.members.cache.get(interaction.member.user.id);
     const voiceChannel = member.voice.channel;
     if (voiceChannel) {
+        var botInChannel = false
+        voiceChannel.members.forEach(async element => {
+            if (element.user.username == client.user.username) {
+                botInChannel = true;
+            }
+        });
         let connection = await voiceChannel.join();
         const dispatcher = connection.play(ytdl(queue[0].url,
             { filter: 'audioonly' }));
-
-        sendEmbed(interaction, 
-        `Music Playback`,
-        `Now playing [${queue[0].title}](${queue[0].url})`,
-        `Requested by @${interaction.member.user.nickname}`)
-
+    
+        if (botInChannel == false) {
+            sendEmbed(interaction, 
+                `Music Playback`,
+                `Joining channel **${voiceChannel.name}**...\n
+                Now playing: [${queue[0].title}](${queue[0].url})`,
+                `Requested by @${interaction.member.nick || interaction.member.user.username}`)
+        }
+        else {
+            sendEmbed(interaction, 
+                `Music Playback`,
+                `Now playing: [${queue[0].title}](${queue[0].url})`,
+                `Requested by @${interaction.member.nick || interaction.member.user.username}`)
+        }
         //dispatcher.setVolume(0.3);
 
         dispatcher.on("finish", () => {
-            interaction.member.voice.channel.leave();
+            voiceChannel.leave();
             queue.shift();
             if (queue.length > 0) {
                 playQueue(interaction);
             }
             else {
-                sendEmbed(interaction, "", "Queue empty", "")
+                sendEmbed(interaction, "", `Queue empty\nLeft voicechannel: **${voiceChannel.name}**`, "")
             }
         });
 
@@ -335,10 +356,9 @@ client.on('message', async message => {
                 connection = message.member.voice.channel.leave();
             });
 
-        } else {
-            message.reply('You need to join a voice channel first!');
         }
     }
+
     if (message.content.substring(0, 1) == prefix) {
         const args = message.content.slice(prefix.length).trim().split(/ +/)
         const commandName = args.shift().toLowerCase();
@@ -383,7 +403,7 @@ client.on('message', async message => {
         timestamps.set(message.author.id, now);
         setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
         try {
-            command.execute(message, args, client);
+            command.execute(message, args, client, queue, searchResults);
         } catch (error) {
             console.error(error);
             message.reply('There was an error trying to execute that command!')

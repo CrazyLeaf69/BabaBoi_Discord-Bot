@@ -1,26 +1,20 @@
 const Discord = require('discord.js');
 const ytdl = require("ytdl-core");
-const fetch = require("node-fetch");
 
 module.exports = {
-	name: 'play',
-	description: 'play recorded audio',
-	aliases: 'p',
+	name: 'skip',
+	description: 'Skip a song in the queue',
+	aliases: '',
 	args: true,
-	argsNeeded: true,
+	argsNeeded: false,
 	async execute(message, args, client, queue, searchresult) {
-        await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${args}&type=video&key=AIzaSyD4q3HFuGrKvo7qpB0-wsJYWnKiWwZGILM`)
-        .then(res => res.json()).then(async data=> {
-            const items = data.items;
-            const title = items[0].snippet.title
-            const videoId = items[0].id.videoId;
-            const url = `https://www.youtube.com/watch?v=${videoId}`;
-            console.log(title);
-            console.log(url);
-            queue[0] = {title: items[0].snippet.title, url: url};
-            console.log(queue);
+        if (queue.length > 0) {
+            queue.shift();
             playQueue(message, client, queue)
-        });
+        }
+        else {
+            sendEmbed(message, "", "Queue empty", "")
+        }
     },
 };
 async function playQueue(message, client, queue) {

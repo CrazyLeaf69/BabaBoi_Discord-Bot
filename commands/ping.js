@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'ping',
 	description: 'Ping!',
-	aliases: 'p',
+	aliases: '',
 	args: true,
 	argsNeeded: false,
 	execute(message) {
