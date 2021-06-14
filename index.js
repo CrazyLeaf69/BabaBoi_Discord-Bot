@@ -5,7 +5,8 @@ const fetch = require("node-fetch");
 const { prefix, token } = require('./config.json');
 // var data = require('./searchresults.json');
 
-const guildId = '760980566652616774'
+const guildId = '693042214875430954'
+// 760980566652616774 testserver
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -34,95 +35,82 @@ client.on('ready', async () => {
     console.log(`Logged in as ${client.user.tag}!`)
 
     const commands = await getApp(guildId).commands.get()
-    // console.log(commands)
+    console.log(commands)
 
     // to delete command do this
-    // await getApp(guildId).commands('852932282351484928').delete()
+    // await getApp(guildId).commands('853015112965554207').delete()
 
-    // await getApp(guildId).commands.post({
-    //     data: {
-    //         name: 'resume',
-    //         description: 'Resume music',
-    //     },
-    // })
-    // await getApp(guildId).commands.post({
-    //     data: {
-    //         name: 'leave',
-    //         description: 'Leave Voicechannel',
-    //     },
-    // })
+    await getApp(guildId).commands.post({
+        data: {
+            name: 'leave',
+            description: 'Leave Voicechannel',
+        },
+    })
 
-    // await getApp(guildId).commands.post({
-    //     data: {
-    //         name: 'play',
-    //         description: 'Play a song from Youtube by search or url',
-    //         options: [
-    //             {
-    //                 name: 'title',
-    //                 description: 'the song',
-    //                 required: true,
-    //                 type: 3
-    //             }
-    //         ]
-    //     },
-    // })
+    await getApp(guildId).commands.post({
+        data: {
+            name: 'play',
+            description: 'Play a song from Youtube by search or url',
+            options: [
+                {
+                    name: 'title',
+                    description: 'the song',
+                    required: true,
+                    type: 3
+                }
+            ]
+        },
+    })
 
-    // await getApp(guildId).commands.post({
-    //     data: {
-    //         name: 'search',
-    //         description: 'Search for a song from Youtube and recieve top 5 results',
-    //         options: [
-    //             {
-    //                 name: 'title',
-    //                 description: 'Search words',
-    //                 required: true,
-    //                 type: 3
-    //             }
-    //         ]
-    //     },
-    // })
-    // await getApp(guildId).commands.post({
-    //     data: {
-    //         name: 'addfromsearch',
-    //         description: 'Add a song from your searchresult',
-    //         options: [
-    //             {
-    //                 name: 'number',
-    //                 description: 'Number 1-5',
-    //                 required: true,
-    //                 type: 3
-    //             }
-    //         ]
-    //     },
-    // })
-    // await getApp(guildId).commands.post({
-    //     data: {
-    //         name: 'addtoqueue',
-    //         description: 'Search for a song and add it to the queue',
-    //         options: [
-    //             {
-    //                 name: 'title',
-    //                 description: 'Title of the song',
-    //                 required: true,
-    //                 type: 3
-    //             }
-    //         ]
-    //     },
-    // })
+    await getApp(guildId).commands.post({
+        data: {
+            name: 'search',
+            description: 'Search for a song from Youtube and recieve top 5 results',
+            options: [
+                {
+                    name: 'title',
+                    description: 'Search words',
+                    required: true,
+                    type: 3
+                }
+            ]
+        },
+    })
+    await getApp(guildId).commands.post({
+        data: {
+            name: 'addfromsearch',
+            description: 'Add a song from your searchresult',
+            options: [
+                {
+                    name: 'number',
+                    description: 'Number 1-5',
+                    required: true,
+                    type: 3
+                }
+            ]
+        },
+    })
+    await getApp(guildId).commands.post({
+        data: {
+            name: 'addtoqueue',
+            description: 'Search for a song and add it to the queue',
+            options: [
+                {
+                    name: 'title',
+                    description: 'Title of the song',
+                    required: true,
+                    type: 3
+                }
+            ]
+        },
+    })
 
-    // await getApp(guildId).commands.post({
-    //     data: {
-    //         name: 'skip',
-    //         description: 'skip a song in the queue',
-    //     },
-    // })
-
-    // await getApp(guildId).commands.post({
-    //     data: {
-    //         name: 'pause',
-    //         description: 'Pause music',
-    //     },
-    // })
+    await getApp(guildId).commands.post({
+        data: {
+            name: 'skip',
+            description: 'skip a song in the queue',
+        },
+    })
 
     client.ws.on('INTERACTION_CREATE', async (interaction) => {
         const { name, options } = interaction.data
@@ -423,136 +411,3 @@ client.on('message', async message => {
     }
 
 });
-
-// <--------------------------------------------------- Check Lesson -------------------------------------------->
-// this function is not in use due to summer break and no lessons
-function checklesson() {
-    // date and time conficuration
-    var date = new Date();
-    var day = date.getDay();
-    var h = date.getHours();
-    var min = date.getMinutes();
-
-    // the amount of minutes that has passed;
-    var current = (h * 60) + min + 120;
-
-    // array of all lesson objects
-    const LessonInfo = data.lessonInfo
-
-    // ordered and unordered lists
-    var orderedLesTime = [];
-    var unorderedLesTime = [];
-    var orderedLesEnd = [];
-    var orderedLessons = [];
-    var unordedLessons = [];
-    var StartTimeInNormalTime = [];
-    var EndTimeInNormalTime = [];
-
-
-    LessonInfo.forEach(element => {
-        const dayOfWeek = element.dayOfWeekNumber;
-        const lesson = element.texts[0];
-
-        // here i need to get hours and minutes into minutes
-        const timeStart = element.timeStart.split(":");
-        const StartInMinutes = +timeStart[0] * 60 + +timeStart[1];
-
-        const timeEnd = element.timeEnd.split(":");
-        const EndInMinutes = +timeEnd[0] * 60 + +timeEnd[1]
-
-        if (day == dayOfWeek) {
-            orderedLesTime.push(StartInMinutes)
-            unorderedLesTime.push(StartInMinutes)
-            orderedLesEnd.push(EndInMinutes)
-            unordedLessons.push(lesson)
-            StartTimeInNormalTime.push(element.timeStart.substring(0, element.timeStart.length - 3));
-            EndTimeInNormalTime.push(element.timeEnd.substring(0, element.timeEnd.length - 3));
-        }
-    });
-
-    // Sort the time in minutes lists
-    orderedLesTime.sort(function (a, b) {
-        return a - b;
-    });
-    orderedLesEnd.sort(function (a, b) {
-        return a - b;
-    });
-    // remove distansundervisning
-    if (orderedLesTime[0] == 480) {
-        orderedLesTime.shift()
-    }
-    if (orderedLesEnd[orderedLesEnd.length - 1] == 1020) {
-        orderedLesEnd.pop(orderedLesEnd[orderedLesEnd.length - 1]);
-    }
-    // sort normal time lists
-    StartTimeInNormalTime.sort(function (a, b) {
-        return a.localeCompare(b);
-    });
-    EndTimeInNormalTime.sort(function (a, b) {
-        return a.localeCompare(b);
-    });
-    // remove distansundervisning
-    if (StartTimeInNormalTime[0] == '08:00') {
-        StartTimeInNormalTime.shift()
-    }
-    if (EndTimeInNormalTime[EndTimeInNormalTime.length - 1] == '17:00') {
-        EndTimeInNormalTime.pop(EndTimeInNormalTime[EndTimeInNormalTime.length - 1]);
-    }
-
-
-    for (let i = 0; i < orderedLesTime.length; i++) {
-        const element = orderedLesTime[i];
-        const currentObj = element;
-        if (orderedLesTime[i] == orderedLesTime[i - 1]) {
-        } else {
-            for (let i = 0; i < unorderedLesTime.length; i++) {
-                const element = unorderedLesTime[i];
-                if (element == currentObj) {
-                    orderedLessons.push(unordedLessons[i])
-                }
-            }
-        }
-    }
-    for (let i = 0; i < orderedLesTime.length; i++) {
-        let lessonStarttime = orderedLesTime[i];
-        let lessonEndtime = orderedLesEnd[i];
-        let previousLessonEndtime = orderedLesEnd[i - 1];
-        if ((current >= previousLessonEndtime && current <= lessonStarttime) || current == 0) {
-            const embed = new Discord.MessageEmbed()
-                .setColor("#0036FF")
-                .setTitle("Lektioner:")
-                .addFields(
-                    { name: "Kommande Lektion: ", value: `--------------------------\n**${orderedLessons[i]}**\nBörjar: ${StartTimeInNormalTime[i]}`, inline: true },
-                )
-            return msg.edit(embed);
-        }
-        else if (current >= lessonStarttime && current <= lessonEndtime) {
-            if (orderedLessons[i + 1] == undefined) {
-                const embed = new Discord.MessageEmbed()
-                    .setColor("#0036FF")
-                    .setTitle("Lektioner:")
-                    .addFields(
-                        { name: "Nuvarande Lektion: ", value: `--------------------------\n**${orderedLessons[i]}**\nSlutar: ${EndTimeInNormalTime[i]}`, inline: true },
-                        { name: "Nästa Lektion:", value: `--------------------------\n**Slut på dagen**`, inline: true },
-                    )
-                return msg.edit(embed);
-            }
-            else {
-                const embed = new Discord.MessageEmbed()
-                    .setColor("#0036FF")
-                    .setTitle("Lektioner:")
-                    .addFields(
-                        { name: "Nuvarande Lektion: ", value: `--------------------------\n**${orderedLessons[i]}**\nSlutar: ${EndTimeInNormalTime[i]}`, inline: true },
-                        { name: "Nästa Lektion:", value: `--------------------------\n**${orderedLessons[i + 1]}**\nBörjar: ${StartTimeInNormalTime[i + 1]}`, inline: true },
-                    )
-                return msg.edit(embed);
-            }
-        } else if (current >= orderedLesEnd[orderedLesEnd.length - 1]) {
-            const embed = new Discord.MessageEmbed()
-                .setColor("#0036FF")
-                .setTitle("Lektioner:")
-                .setDescription("**Inga fler lektioner idag**")
-            return msg.edit(embed);
-        }
-    }
-}
