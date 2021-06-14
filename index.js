@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const ytdl = require('ytdl-core');
 const fetch = require("node-fetch");
 const { prefix, token } = require('./config.json');
+// var data = require('./searchresults.json');
 
 const guildId = '760980566652616774'
 
@@ -17,7 +18,6 @@ for (const file of commandFiles) {
 }
 
 const cooldowns = new Discord.Collection();
-
 
 let searchResults = [];
 let queue = [];
@@ -241,8 +241,20 @@ async function search(search, interaction) {
 };
 
 function addFromSearch(number, interaction) {
+    var rawdata = fs.readFileSync('./searchresults.json')
+    let array = JSON.parse(rawdata);
     number-=1
-    queue.push({title: searchResults[number].title, url: searchResults[number].url});
+    let title;
+    let url
+    if (searchResults[number] == undefined) {
+        title = array[number].title
+        url = array[number].url
+    } else {
+        title = searchResults[number].title
+        url = searchResults[number].url
+    }
+    console.log(title);
+    queue.push({title: title, url: url});
     let queueTitles = "";
     for (let i = 0; i < queue.length; i++) {
         const song = queue[i];
