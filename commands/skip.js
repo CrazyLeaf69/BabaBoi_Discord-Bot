@@ -4,7 +4,7 @@ const playQueue = require("../playqueue.js")
 module.exports = {
 	name: 'skip',
 	description: 'Skip a song in the queue',
-	aliases: '',
+	aliases: ['sk'],
 	args: true,
 	argsNeeded: false,
 	async execute(message, args, client, queue, searchresult) {

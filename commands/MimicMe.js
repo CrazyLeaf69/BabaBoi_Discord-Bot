@@ -3,7 +3,7 @@ const fs = require("fs")
 module.exports = {
 	name: 'mimic',
 	description: 'mimics what u just said',
-	aliases: 'm',
+	aliases: ['m'],
 	args: true,
 	argsNeeded: false,
 	async execute(message) {

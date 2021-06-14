@@ -4,7 +4,7 @@ const playQueue = require("../playqueue.js")
 module.exports = {
 	name: 'play',
 	description: 'play recorded audio',
-	aliases: 'p',
+	aliases: ['p'],
 	args: true,
 	argsNeeded: true,
 	async execute(message, args, client, queue, searchresult) {

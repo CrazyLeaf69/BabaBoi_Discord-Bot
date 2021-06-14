@@ -5,7 +5,7 @@ const playQueue = require("../playqueue.js")
 module.exports = {
 	name: 'addfromsearch',
 	description: 'Add a song from the previous search to the queue',
-	aliases: 'afc',
+	aliases: ['afc'],
 	args: true,
 	argsNeeded: true,
 	async execute(message, args, client, queue, searchResults) {

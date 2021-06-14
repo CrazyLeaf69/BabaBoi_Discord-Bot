@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'leave',
 	description: 'Tell the bot to leave current voicechannel',
-	aliases: 'l',
+	aliases: ['l'],
 	args: true,
 	argsNeeded: false,
 	async execute(message, args, client, queue, searchResults) {

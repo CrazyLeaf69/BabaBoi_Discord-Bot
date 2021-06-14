@@ -7,7 +7,7 @@ const fs = require("fs")
 module.exports = {
 	name: 'search',
 	description: 'Search music from Youtube',
-	aliases: 's',
+	aliases: ['s'],
 	args: true,
 	argsNeeded: true,
 	async execute(message, args, client, queue, searchRes) {
