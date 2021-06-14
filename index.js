@@ -359,7 +359,7 @@ client.on('message', async message => {
         }
     }
 
-    if (message.content.substring(0, 1) == prefix) {
+    if (message.content.substring(0, 1) == prefix && message.guild.id != "651518721327628308") {
         const args = message.content.slice(prefix.length).trim().split(/ +/)
         const commandName = args.shift().toLowerCase();
 
