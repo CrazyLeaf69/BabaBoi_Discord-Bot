@@ -33,6 +33,7 @@ const getApp = (guildId) => {
 }
 
 client.on('ready', async () => {
+    testfunction("hello world")
     console.log(`Logged in as ${client.user.tag}!`)
 
     const commands = await getApp(guildId).commands.get()
@@ -417,3 +418,7 @@ client.on('message', async message => {
     }
 
 });
+
+function testfunction(string) {
+    console.log(string);
+}
