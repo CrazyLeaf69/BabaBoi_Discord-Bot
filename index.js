@@ -33,14 +33,13 @@ const getApp = (guildId) => {
 }
 
 client.on('ready', async () => {
-    testfunction("hello world")
     console.log(`Logged in as ${client.user.tag}!`)
 
     const commands = await getApp(guildId).commands.get()
     console.log(commands)
 
     // to delete command do this
-    // await getApp(guildId).commands('854175225347047445').delete()
+    // await getApp(guildId).commands('854294876518875177').delete()
     
     // to delete all commands do this
     // commands.forEach(async element => {
@@ -51,6 +50,27 @@ client.on('ready', async () => {
     //     data: {
     //         name: 'leave',
     //         description: 'Leave Voicechannel',
+    //     },
+    // })
+
+    // await getApp(guildId).commands.post({
+    //     data: {
+    //         name: 'findsongs',
+    //         description: 'Find a song by searching for its lyrics, title or artist',
+    //         options: [
+    //             {
+    //                 name: 'searchwords',
+    //                 description: 'Search for song',
+    //                 required: true,
+    //                 type: 3
+    //             },
+    //             {
+    //                 name: 'perpage',
+    //                 description: 'Per page',
+    //                 required: false,
+    //                 type: 3
+    //             }
+    //         ]
     //     },
     // })
 
@@ -149,7 +169,7 @@ client.on('ready', async () => {
             addFromSearch(args.number, interaction)
         }
         else if (command === 'addtoqueue') {
-            addToQueue(args.title, interaction)
+            addToQueue(args.lyrics, interaction)
         }
         else if (command === 'skip') {
             if (queue.length > 0) {
@@ -163,11 +183,8 @@ client.on('ready', async () => {
         else if (command === 'leave') {
             leave(interaction)
         }
-        else if (command === 'pause') {
-            pause(args.title, interaction)
-        }
-        else if (command === 'resume') {
-            resume(args.title, interaction)
+        else if (command === 'findsongs') {
+            findsongs(args.searchwords, args.perpage, interaction)
         }
     })
 });
@@ -337,6 +354,45 @@ async function playQueue(interaction) {
         reply(interaction, 'You need to join a voice channel first!');
     }
 };
+
+async function findsongs(search, per_page, interaction) {
+    console.log(search);
+    var token = "gqefLsr-j3RSR4AHtaEkdQ_UAoDhcUudk0qnYJzxKBYZiLmie3xcDrFg5oC-qVoD";
+
+    const perPage = !!per_page? per_page:10
+    let response = await fetch(
+      "https://api.genius.com/search?access_token=" +
+        token + "&q=" + encodeURIComponent(search) +
+        "&per_page=" + perPage + '"'
+    );
+    let data = await response.json();
+    // console.log(data);
+    // console.log("Found this:\n");
+    let ResultList = []
+    data.response.hits.forEach((element) => {
+      const title = element.result.title;
+      const ArtistName = element.result.primary_artist.name;
+      const url = element.result.url;
+      // picture sorting
+      const songURL = element.result.song_art_image_thumbnail_url
+      const picZize = songURL.split(".")[songURL.split(".").length-2]
+      const midleX = parseInt(picZize.split("x")[1])
+      const img = (midleX<320 && midleX>280 && midleX != NaN) ? songURL : "./images/noimage.jpg" ;
+      // ---------------------
+      const pgwiews = element.result.stats.pageviews;
+      const videoId = element.result.id
+      // console.log(`${i + 1}: ${title} by ${ArtistName}`);
+      ResultList.push({
+        title: title, artist: ArtistName, 
+        url: url, img: img, wiews: pgwiews, vidId: videoId});
+    });
+    let songlist = "";
+    ResultList.forEach((element, i) => {
+        songlist += `${i+1}: [${element.title}](https://lyricsflow.herokuapp.com/lyrics.php?song=${element.vidId}) by ${element.artist}\n`
+    });
+    sendEmbed(interaction, `Searchresults for: "${search}"`, songlist+`\n**[lyricsflow.net](https://lyricsflow.herokuapp.com/index.php)**`, "")
+}
+
 function sendEmbed(interaction, title, description, footer) {
     embed = new Discord.MessageEmbed()
         .setColor("#0036FF")
@@ -418,7 +474,3 @@ client.on('message', async message => {
     }
 
 });
-
-function testfunction(string) {
-    console.log(string);
-}
