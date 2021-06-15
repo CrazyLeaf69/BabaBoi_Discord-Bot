@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const ytdl = require('ytdl-core');
 const fetch = require("node-fetch");
 const { prefix, token } = require('./config.json');
-// var data = require('./searchresults.json');
+const decode = require("./functions/decode_string.js")
 
 const guildId = '693042214875430954'
 // 760980566652616774 testserver
@@ -35,7 +35,7 @@ client.on('ready', async () => {
     console.log(`Logged in as ${client.user.tag}!`)
 
     const commands = await getApp(guildId).commands.get()
-    console.log(commands)
+    // console.log(commands)
 
     // to delete command do this
     // await getApp(guildId).commands('853015112965554207').delete()
@@ -195,7 +195,7 @@ async function play(search, interaction) {
     await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${search}&type=video&key=AIzaSyD4q3HFuGrKvo7qpB0-wsJYWnKiWwZGILM`)
     .then(res => res.json()).then(async data=> {
         const items = data.items;
-        const title = items[0].snippet.title
+        const title = await decode.execute(items[0].snippet.title)
         const videoId = items[0].id.videoId;
         const url = `https://www.youtube.com/watch?v=${videoId}`;
         console.log(title);
@@ -211,10 +211,10 @@ async function search(search, interaction) {
     let url = "";
     searchResults = [];
     await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${search}&type=video&key=AIzaSyD4q3HFuGrKvo7qpB0-wsJYWnKiWwZGILM`)
-    .then(res => res.json()).then(data => {
+    .then(res => res.json()).then(async data => {
         const items = data.items;
         var embedResults = "";
-        items.forEach(item => {
+        await Promise.all(items.map(async (item) => {
             if (item.id.kind == "youtube#video") {
                 const title = item.snippet.title;
                 const videoId = item.id.videoId;
@@ -223,7 +223,7 @@ async function search(search, interaction) {
                 i+=1
                 embedResults += `${i}: ${title}\n`;
             }
-        });
+        }));
         sendEmbed(interaction, `Searchresults for: "${search}"`, embedResults, "")
     });
 };
@@ -258,7 +258,7 @@ async function addToQueue(search, interaction) {
     await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${search}&type=video&key=AIzaSyD4q3HFuGrKvo7qpB0-wsJYWnKiWwZGILM`)
     .then(res => res.json()).then(async data=> {
         const items = data.items;
-        const title = items[0].snippet.title
+        const title = await decode.execute(items[0].snippet.title)
         const videoId = items[0].id.videoId;
         const url = `https://www.youtube.com/watch?v=${videoId}`;
         console.log(title);
@@ -403,7 +403,7 @@ client.on('message', async message => {
         timestamps.set(message.author.id, now);
         setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
         try {
-            command.execute(message, args, client, queue, searchResults);
+            command.execute(message, args.join(" "), client, queue, searchResults);
         } catch (error) {
             console.error(error);
             message.reply('There was an error trying to execute that command!')

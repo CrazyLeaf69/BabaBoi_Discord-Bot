@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const playQueue = require("../playqueue.js")
+const playQueue = require("../functions/playqueue.js")
 
 module.exports = {
 	name: 'skip',

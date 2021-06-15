@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const fetch = require("node-fetch");
-const playQueue = require("../playqueue.js")
+const playQueue = require("../functions/playqueue.js")
 
 module.exports = {
 	name: 'addtoqueue',

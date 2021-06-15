@@ -1,8 +1,7 @@
 const Discord = require('discord.js');
 const fetch = require("node-fetch");
 const fs = require("fs")
-
-// var searchResJson = require('../searchresults.json');
+const decode = require("../functions/decode_string")
 
 module.exports = {
 	name: 'search',
@@ -16,19 +15,19 @@ module.exports = {
         let searchResults = [];
         data = [];
         await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${args}&type=video&key=AIzaSyD4q3HFuGrKvo7qpB0-wsJYWnKiWwZGILM`)
-        .then(res => res.json()).then(data => {
+        .then(res => res.json()).then(async data => {
             const items = data.items;
             var embedResults = "";
-            items.forEach(item => {
+            await Promise.all(items.map(async (item) => {
                 if (item.id.kind == "youtube#video") {
-                    const title = item.snippet.title;
+                    const title = await decode.execute(item.snippet.title);
                     const videoId = item.id.videoId;
                     url = `https://www.youtube.com/watch?v=${videoId}`;
                     searchResults.push({title, url});
                     i+=1
                     embedResults += `${i}: ${title}\n`;
                 }
-            });
+              }));
             sendEmbed(message, `Searchresults for: "${args}"`, embedResults, "")
         });
         fs.writeFileSync('searchresults.json', `${JSON.stringify(searchResults)}`);
