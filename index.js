@@ -222,7 +222,7 @@ async function search(search, interaction) {
         var embedResults = "";
         await Promise.all(items.map(async (item) => {
             if (item.id.kind == "youtube#video") {
-                const title = item.snippet.title;
+                const title = decode.execute(item.snippet.title);
                 const videoId = item.id.videoId;
                 url = `https://www.youtube.com/watch?v=${videoId}`;
                 searchResults.push({title: title, url: url});
