@@ -40,12 +40,11 @@ client.on('ready', async () => {
     const date = new Date();
     const sec = date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds()
     let msg = await client.channels.cache.get("760980566652616776").send('Sekunder tills Lowe fyller 18 år: ' + 86400-sec)
-    console.log();
     setInterval(() => {
         var date = new Date();
         var seconds = date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds()
         console.log(seconds);
-        msg.edit('Sekunder tills Lowe fyller 18 år: ' + 86400-seconds)
+        msg.edit(`Sekunder tills Lowe fyller 18 år: ${86400-seconds}`)
     }, 1000);
 
     // to delete command do this
