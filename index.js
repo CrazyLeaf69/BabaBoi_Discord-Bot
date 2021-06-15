@@ -6,8 +6,8 @@ const { prefix, token } = require('./config.json');
 const decode = require("./functions/decode_string.js")
 
 const guildId = '760980566652616774'
-// 693042214875430954 cool club
 // 760980566652616774 testserver
+// secondbot aldrig på cool club
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
