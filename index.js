@@ -43,7 +43,7 @@ client.on('ready', async () => {
     let msg = await client.channels.cache.get("693042214875430957").send('Sekunder tills Lowe fyller 18 år: ' + 86400-sec)
     setInterval(() => {
         var date = new Date();
-        var seconds = date.getHours()-2 * 3600 + date.getMinutes() * 60 + date.getSeconds()
+        var seconds = date.getHours()+2 * 3600 + date.getMinutes() * 60 + date.getSeconds()
         console.log(seconds);
         msg.edit('Sekunder tills Lowe fyller 18 år: ' + 86400-seconds)
     }, 1000);
