@@ -5,9 +5,9 @@ const fetch = require("node-fetch");
 const { prefix, token } = require('./config.json');
 const decode = require("./functions/decode_string.js")
 
-const guildId = '760980566652616774'
+const guildId = '693042214875430954'
 // 760980566652616774 testserver
-// secondbot aldrig på cool club
+// 693042214875430954 cool club
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -33,7 +33,6 @@ const getApp = (guildId) => {
 }
 
 client.on('ready', async () => {
-    testfunction("hello world")
     console.log(`Logged in as ${client.user.tag}!`)
 
     const commands = await getApp(guildId).commands.get()
@@ -418,7 +417,3 @@ client.on('message', async message => {
     }
 
 });
-
-function testfunction(string) {
-    console.log(string);
-}
