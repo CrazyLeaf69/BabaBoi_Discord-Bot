@@ -38,16 +38,6 @@ client.on('ready', async () => {
     const commands = await getApp(guildId).commands.get()
     // console.log(commands)
 
-    const date = new Date();
-    const sec = (date.getHours()+2) * 3600 + date.getMinutes() * 60 + date.getSeconds()
-    let msg = await client.channels.cache.get("693042214875430957").send(`Sekunder tills Lowe fyller 18 år: ${86400-sec}`)
-    setInterval(() => {
-        var date = new Date();
-        var seconds = (date.getHours()+2) * 3600 + date.getMinutes() * 60 + date.getSeconds()
-        console.log(seconds);
-        msg.edit(`Sekunder tills Lowe fyller 18 år: ${86400-seconds}`)
-    }, 1000);
-
     // to delete command do this
     // await getApp(guildId).commands('854175225347047445').delete()
     
@@ -427,3 +417,14 @@ client.on('message', async message => {
     }
 
 });
+
+// birthday timer
+// const date = new Date();
+// const sec = (date.getHours()+2) * 3600 + date.getMinutes() * 60 + date.getSeconds()
+// let msg = await client.channels.cache.get("693042214875430957").send(`Sekunder tills Lowe fyller 18 år: ${86400-sec}`)
+// setInterval(() => {
+//     var date = new Date();
+//     var seconds = (date.getHours()+2) * 3600 + date.getMinutes() * 60 + date.getSeconds()
+//     console.log(seconds);
+//     msg.edit(`Sekunder tills Lowe fyller 18 år: ${86400-seconds}`)
+// }, 1000);
