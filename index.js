@@ -6,6 +6,7 @@ const { prefix, token } = require('./config.json');
 const decode = require("./functions/decode_string.js")
 
 const guildId = '693042214875430954'
+// 693042214875430954 cool club
 // 760980566652616774 testserver
 
 const client = new Discord.Client();
@@ -40,77 +41,82 @@ client.on('ready', async () => {
     // to delete command do this
     // await getApp(guildId).commands('853015112965554207').delete()
 
-    await getApp(guildId).commands.post({
-        data: {
-            name: 'leave',
-            description: 'Leave Voicechannel',
-        },
-    })
+    // to delete all commands do this
+    // commands.forEach(async element => {
+    //     await getApp(guildId).commands(element.id).delete()
+    // });
 
-    await getApp(guildId).commands.post({
-        data: {
-            name: 'play',
-            description: 'Play a song from Youtube by search or url',
-            options: [
-                {
-                    name: 'title',
-                    description: 'the song',
-                    required: true,
-                    type: 3
-                }
-            ]
-        },
-    })
+    // await getApp(guildId).commands.post({
+    //     data: {
+    //         name: 'leave',
+    //         description: 'Leave Voicechannel',
+    //     },
+    // })
 
-    await getApp(guildId).commands.post({
-        data: {
-            name: 'search',
-            description: 'Search for a song from Youtube and recieve top 5 results',
-            options: [
-                {
-                    name: 'title',
-                    description: 'Search words',
-                    required: true,
-                    type: 3
-                }
-            ]
-        },
-    })
-    await getApp(guildId).commands.post({
-        data: {
-            name: 'addfromsearch',
-            description: 'Add a song from your searchresult',
-            options: [
-                {
-                    name: 'number',
-                    description: 'Number 1-5',
-                    required: true,
-                    type: 3
-                }
-            ]
-        },
-    })
-    await getApp(guildId).commands.post({
-        data: {
-            name: 'addtoqueue',
-            description: 'Search for a song and add it to the queue',
-            options: [
-                {
-                    name: 'title',
-                    description: 'Title of the song',
-                    required: true,
-                    type: 3
-                }
-            ]
-        },
-    })
+    // await getApp(guildId).commands.post({
+    //     data: {
+    //         name: 'play',
+    //         description: 'Play a song from Youtube by search or url',
+    //         options: [
+    //             {
+    //                 name: 'title',
+    //                 description: 'the song',
+    //                 required: true,
+    //                 type: 3
+    //             }
+    //         ]
+    //     },
+    // })
 
-    await getApp(guildId).commands.post({
-        data: {
-            name: 'skip',
-            description: 'skip a song in the queue',
-        },
-    })
+    // await getApp(guildId).commands.post({
+    //     data: {
+    //         name: 'search',
+    //         description: 'Search for a song from Youtube and recieve top 5 results',
+    //         options: [
+    //             {
+    //                 name: 'title',
+    //                 description: 'Search words',
+    //                 required: true,
+    //                 type: 3
+    //             }
+    //         ]
+    //     },
+    // })
+    // await getApp(guildId).commands.post({
+    //     data: {
+    //         name: 'addfromsearch',
+    //         description: 'Add a song from your searchresult',
+    //         options: [
+    //             {
+    //                 name: 'number',
+    //                 description: 'Number 1-5',
+    //                 required: true,
+    //                 type: 3
+    //             }
+    //         ]
+    //     },
+    // })
+    // await getApp(guildId).commands.post({
+    //     data: {
+    //         name: 'addtoqueue',
+    //         description: 'Search for a song and add it to the queue',
+    //         options: [
+    //             {
+    //                 name: 'title',
+    //                 description: 'Title of the song',
+    //                 required: true,
+    //                 type: 3
+    //             }
+    //         ]
+    //     },
+    // })
+
+    // await getApp(guildId).commands.post({
+    //     data: {
+    //         name: 'skip',
+    //         description: 'skip a song in the queue',
+    //     },
+    // })
 
     client.ws.on('INTERACTION_CREATE', async (interaction) => {
         const { name, options } = interaction.data
