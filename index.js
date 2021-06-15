@@ -207,7 +207,7 @@ async function play(search, interaction) {
         const url = `https://www.youtube.com/watch?v=${videoId}`;
         console.log(title);
         console.log(url);
-        queue[0] = {title: items[0].snippet.title, url: url};
+        queue[0] = {title: title, url: url};
         console.log(queue);
         playQueue(interaction)
     });
