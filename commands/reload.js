@@ -7,7 +7,7 @@ module.exports = {
 	argsNeeded: true,
 	execute(message, args) {
 		if (!args.length) return message.channel.send(`You didn't pass any command to reload, ${message.author}!`);
-		const commandName = args[0].toLowerCase();
+		const commandName = args.toLowerCase();
 		const command = message.client.commands.get(commandName)
 		|| message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 		
