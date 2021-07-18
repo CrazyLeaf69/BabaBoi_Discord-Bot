@@ -14,7 +14,7 @@ module.exports = {
 			.then(html => {
 				const $ = cheerio.load(html)
 
-				const box = $('.champ-box.ALL')
+				const box = $('.champ-box ALL')
 				// find titles
 				const titles = box.find("h3").text()
 				title1 = titles.substring(0,19 + args[0].split("").length)
