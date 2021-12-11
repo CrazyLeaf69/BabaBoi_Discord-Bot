@@ -237,7 +237,7 @@ function recordAgain(message, server) {
     }
 }
 
-function sendToBotChannel(server, title, description, footer) {
+async function sendToBotChannel(server, title, description, footer) {
     const decodedString = await decode.execute(description)
     try {
         server.channels.cache.filter((c) => c.type == 'text').forEach((textchannel) => {
