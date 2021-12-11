@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const speech = require('@google-cloud/speech');
 const fs = require("fs")
 const ytdl = require('ytdl-core');
+const decode = require("../functions/decode_string.js");
 let connection = "";
 let dispatcher = "";
 
@@ -237,13 +238,14 @@ function recordAgain(message, server) {
 }
 
 function sendToBotChannel(server, title, description, footer) {
+    const decodedString = await decode.execute(description)
     try {
         server.channels.cache.filter((c) => c.type == 'text').forEach((textchannel) => {
             if (textchannel.name == "bot") {
                 embed = new Discord.MessageEmbed()
                 .setColor("#0036FF")
                 .setTitle(title)
-                .setDescription(description)
+                .setDescription(decodedString)
                 .setFooter(footer)
                 textchannel.send(embed);
             }
