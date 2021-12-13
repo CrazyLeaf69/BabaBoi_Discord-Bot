@@ -134,7 +134,7 @@ let queue = [];
 async function speak(message, server) {
     var url = 'https://www.youtube.com/watch?v=U_cPir6MwLM';
     connection = await message.voice.channel.join()
-    dispatcher = connection.play(ytdl(url), {filter: 'audioonly', quality: 'highest' });
+    dispatcher = connection.play(ytdl(url, {filter: 'audioonly'}));
     dispatcher.on('error', console.error);
     console.log("spoke");
 };
@@ -208,7 +208,7 @@ function resume(message, server) {
 // play queue
 async function playQueue(message, server) {
     connection = await message.voice.channel.join()
-    dispatcher = connection.play(ytdl(queue[0].url), {filter: 'audioonly', quality: 'highest' });
+    dispatcher = connection.play(ytdl(queue[0].url, {filter: 'audioonly'}));
     sendToBotChannel(server,"", `**Now playing:** [${queue[0].title}](${queue[0].url})`, `Requested by @${message.user.username}`)
     console.log("playing......");
     dispatcher.on("finish", () => {
