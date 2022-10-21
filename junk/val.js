@@ -21,7 +21,7 @@ module.exports = {
 				.setTitle("Show players ranks")
 				.setDescription(acc[0] + "'s rank is " + "**" + rank + "**")
 				.setColor("#0036FF")
-				message.channel.send(embed)
+				message.channel.send({ embeds: [embed] })
 			});	
 		} catch (error) {
 			console.error();

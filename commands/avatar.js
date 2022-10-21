@@ -15,7 +15,7 @@ module.exports = {
                     .setTitle("Your avatar:")
                     .setColor("#0036FF")
                     .setImage(message.author.displayAvatarURL({ format: "png", dynamic: true }));
-                message.channel.send(embed);
+                message.channel.send({ embeds: [embed] });
             }
             else {
                 message.mentions.users.map(user => {
@@ -23,7 +23,7 @@ module.exports = {
                         .setTitle(user.username + "'s avatar:")
                         .setColor("#0036FF")
                         .setImage(user.displayAvatarURL({ format: "png", dynamic: true }));
-                    message.channel.send(embed);
+                    message.channel.send({ embeds: [embed] });
                 });
             }
         });

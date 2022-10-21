@@ -7,7 +7,7 @@ module.exports = {
 	execute(message, args) {
 		//class="map-countdown"
 		//website = https://apexmap.kuroi.io
-		const fetch = require("node-fetch");
+		const fetch = require("cross-fetch");
 		const cheerio = require("cheerio");
 		try {
 			fetch("https://www.counterstats.net/league-of-legends/" + args[0]).then(res => res.text())
@@ -15,6 +15,7 @@ module.exports = {
 				const $ = cheerio.load(html)
 
 				const box = $('.champ-box.ALL')
+				// console.log(box);
 				// find titles
 				const titles = box.find("h3").text()
 				title1 = titles.substring(0,19 + args[0].split("").length)
@@ -113,7 +114,7 @@ module.exports = {
 					{ name: title2, value: worst, inline: true}
 				)
 				// Finally send the embed in the same channel
-				message.channel.send(embed)
+				message.channel.send({ embeds: [embed] })
 				
 			});	
 		} catch (error) {

@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const playQueue = require("../functions/playqueue.js")
+const leave = require("./leave.js")
 
 module.exports = {
 	name: 'skip',
@@ -10,7 +11,14 @@ module.exports = {
 	async execute(message, args, client, queue, searchresult) {
         if (queue.length > 0) {
             queue.shift();
-            playQueue.execute(message, client, queue)
+            if (queue.length > 0) {
+                playQueue.execute(message, client, queue)
+            }
+            else {
+                sendEmbed(message, "", "Queue empty", "")
+                leave.execute(message, queue)
+            }
+            
         }
         else {
             sendEmbed(message, "", "Queue empty", "")
@@ -24,5 +32,5 @@ function sendEmbed(message, title, description, footer) {
         .setTitle(title)
         .setDescription(description)
         .setFooter(footer)
-    message.channel.send(embed)
+    message.channel.send({ embeds: [embed] })
 }

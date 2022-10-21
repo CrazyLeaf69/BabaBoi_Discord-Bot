@@ -22,7 +22,7 @@ module.exports = {
             // data.push(commands.map(command => command.name).join(', '));
             // data.push(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`);
 
-            return message.channel.send(embed)
+            return message.channel.send({ embeds: [embed] })
         }
 
         const name = args[0].toLowerCase();
@@ -39,8 +39,8 @@ module.exports = {
         const embed = new Discord.MessageEmbed()
                 .setTitle(`**Command:** ${command.name}`)
                 .setColor("#0036FF")
-                .setDescription(data)
+                .setDescription(data.join("\n"))
 
-        message.channel.send(embed);
+        message.channel.send({ embeds: [embed] });
     },
 };

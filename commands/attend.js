@@ -15,7 +15,7 @@ module.exports = {
 			.setTitle(message.content.split(" ").splice(1).join(" "))
 			.setDescription(attendanceList)
 			.setColor("#0036FF")
-		msg = await message.channel.send(embed);
+		msg = await message.channel.send({ embeds: [embed] });
 		msg.react('👍').then(() => msg.react('👎'));
 
 		msg.awaitReactions(reaction => {
